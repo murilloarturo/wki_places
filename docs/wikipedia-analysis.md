@@ -90,9 +90,10 @@ xcodebuild build \
   -scheme Wikipedia \
   -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.4' \
-  -derivedDataPath /tmp/wki_places_wikipedia_debug \
-  CODE_SIGNING_ALLOWED=NO
+  -derivedDataPath /tmp/wki_places_wikipedia_debug
 ```
+
+Keep the default local simulator signing enabled for the runnable app. Wikipedia uses an app-group container during startup, so an artifact built with `CODE_SIGNING_ALLOWED=NO` is suitable for focused unit tests but not for launch or deep-link verification.
 
 ## Manual simulator test
 
@@ -106,7 +107,7 @@ xcrun simctl openurl booted \
   'wikipedia://places?lat=37.3349&lon=-122.0090'
 ```
 
-Tap **Open** in the iOS confirmation. Wikipedia should select Places and center near Apple Park rather than the simulator's current location. Repeat with the alias:
+Tap **Open** in the iOS confirmation. On a fresh install, tap **Skip** in Wikipedia's standard onboarding; the pending link then selects Places and centers near Apple Park rather than the simulator's current location. Repeat with the alias:
 
 ```sh
 xcrun simctl openurl booted \
@@ -128,7 +129,7 @@ Both fallback links should open Places without applying an external coordinate o
 - Project parsing and Swift package resolution: passed.
 - Foundation-only parser typecheck: passed.
 - Focused unit tests: 8 passed, 0 failed.
-- Normal Debug simulator build: passed after generating `OpenSourceDebug.xcconfig` with the upstream helper.
+- Locally signed Debug simulator build: passed after generating `OpenSourceDebug.xcconfig` with the upstream helper.
 - `simctl install`: passed.
-- `simctl openurl` for Apple Park: reached the expected iOS “Open in Wikipedia?” confirmation. The final confirmation tap and map visual check remain manual.
+- End-to-end Places launcher handoff: passed. The test accepted the iOS confirmation, handled first-run onboarding, selected the Places tab, and verified the Amsterdam map result.
 - Existing upstream Swift-concurrency, deprecation, Objective-C protocol, and missing-SwiftLint warnings remain; no new dependency or lint configuration was introduced.
