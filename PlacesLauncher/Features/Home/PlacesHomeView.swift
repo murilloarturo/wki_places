@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PlacesHomeView: View {
-    @ObservedObject var viewModel: LocationFeedViewModel
+    let viewModel: LocationFeedViewModel
     let wikipediaOpener: any WikipediaOpening
     let customLocationViewModelFactory: () -> CustomLocationViewModel
 

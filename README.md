@@ -30,7 +30,7 @@ Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. Th
 The app uses feature-based MVVM with a protocol-oriented use-case boundary:
 
 - SwiftUI views own presentation and navigation.
-- `@MainActor` observable view models own screen state and depend only on use-case protocols.
+- `@MainActor` view models use the iOS 17 `@Observable` macro and depend only on use-case protocols.
 - Concrete use cases own HTTP and MapKit service references.
 - Codable DTOs and explicit mappers keep transport fields out of domain models.
 - `AppContainer` assembles dependencies without global singletons.

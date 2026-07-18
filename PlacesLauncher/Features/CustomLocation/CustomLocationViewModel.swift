@@ -1,14 +1,16 @@
 import CoreLocation
 import Foundation
+import Observation
 
 @MainActor
-final class CustomLocationViewModel: ObservableObject {
-    @Published var query = ""
-    @Published private(set) var isSearching = false
-    @Published private(set) var errorMessage: String?
-    @Published private(set) var selectedCoordinate: CLLocationCoordinate2D?
-    @Published private(set) var selectedName: String?
-    @Published private(set) var cameraRevision = 0
+@Observable
+final class CustomLocationViewModel {
+    var query = ""
+    private(set) var isSearching = false
+    private(set) var errorMessage: String?
+    private(set) var selectedCoordinate: CLLocationCoordinate2D?
+    private(set) var selectedName: String?
+    private(set) var cameraRevision = 0
 
     private let searchLocationUseCase: any SearchLocationUseCase
     private let confirmCustomLocationUseCase: any ConfirmCustomLocationUseCase

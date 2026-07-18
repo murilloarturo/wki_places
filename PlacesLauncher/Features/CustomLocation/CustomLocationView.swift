@@ -6,7 +6,7 @@ struct CustomLocationView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @FocusState private var isSearchFocused: Bool
 
-    @StateObject private var viewModel: CustomLocationViewModel
+    @State private var viewModel: CustomLocationViewModel
     @State private var cameraPosition: MapCameraPosition
     @State private var searchTask: Task<Void, Never>?
     @State private var alertMessage: String?
@@ -17,7 +17,7 @@ struct CustomLocationView: View {
         viewModel: CustomLocationViewModel,
         wikipediaOpener: any WikipediaOpening
     ) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = State(initialValue: viewModel)
         self.wikipediaOpener = wikipediaOpener
 
         let initial = viewModel.selectedCoordinate

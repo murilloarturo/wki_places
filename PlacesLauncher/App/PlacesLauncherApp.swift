@@ -2,14 +2,14 @@ import SwiftUI
 
 @main
 struct PlacesLauncherApp: App {
-    @StateObject private var feedViewModel: LocationFeedViewModel
+    @State private var feedViewModel: LocationFeedViewModel
     private let container: AppContainer
 
     init() {
         let container = AppContainer()
         self.container = container
-        _feedViewModel = StateObject(
-            wrappedValue: container.makeLocationFeedViewModel()
+        _feedViewModel = State(
+            initialValue: container.makeLocationFeedViewModel()
         )
     }
 

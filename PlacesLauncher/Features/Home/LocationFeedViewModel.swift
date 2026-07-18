@@ -1,4 +1,5 @@
 import Foundation
+import Observation
 
 enum LocationFeedState: Equatable {
     case idle
@@ -8,8 +9,9 @@ enum LocationFeedState: Equatable {
 }
 
 @MainActor
-final class LocationFeedViewModel: ObservableObject {
-    @Published private(set) var state: LocationFeedState = .idle
+@Observable
+final class LocationFeedViewModel {
+    private(set) var state: LocationFeedState = .idle
 
     private let fetchLocationsUseCase: any FetchLocationsUseCase
 
