@@ -106,7 +106,7 @@ struct PlacesHomeView: View {
                     Text(L10n.Home.Bonus.title)
                         .font(.headline)
                         .foregroundStyle(.white)
-                    Text(L10n.Home.Bonus.subtitle)
+                    Text(L10n.Home.Bonus.subtitle(SuggestionCatalog.places.count))
                         .font(.caption.monospaced())
                         .foregroundStyle(Color.white.opacity(0.68))
                 }

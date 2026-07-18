@@ -78,10 +78,10 @@ struct SuggestionsView: View {
             .accessibilityHint(L10n.Suggestions.Accessibility.backHint)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(L10n.Suggestions.selectLevel)
+                Text(L10n.Suggestions.pickDestination)
                     .font(.system(.largeTitle, design: .monospaced, weight: .black))
                     .foregroundStyle(Color.yellow)
-                Text(L10n.Suggestions.coordinateCount)
+                Text(L10n.Suggestions.coordinateCount(suggestions.count))
                     .font(.caption.weight(.bold))
                     .foregroundStyle(Color.cyan)
             }

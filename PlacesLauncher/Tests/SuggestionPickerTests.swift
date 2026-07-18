@@ -2,6 +2,21 @@ import XCTest
 @testable import PlacesLauncher
 
 final class SuggestionPickerTests: XCTestCase {
+    func testCatalogContainsTwentyNineUniqueValidPlaces() {
+        let places = SuggestionCatalog.places
+
+        XCTAssertEqual(places.count, 29)
+        XCTAssertEqual(Set(places.map(\.id)).count, places.count)
+        for place in places {
+            XCTAssertNoThrow(
+                try CoordinateValidator.validate(
+                    latitude: place.location.latitude,
+                    longitude: place.location.longitude
+                )
+            )
+        }
+    }
+
     func testUsesInjectedIndexForDeterministicSurprise() {
         let suggestions = Array(SuggestionCatalog.places.prefix(3))
         let picker = SuggestionPicker(random: FixedIndexGenerator(index: 1))
@@ -27,4 +42,3 @@ private struct FixedIndexGenerator: RandomIndexGenerating {
         index
     }
 }
-

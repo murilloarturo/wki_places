@@ -15,7 +15,7 @@ final class PlacesLauncherUITests: XCTestCase {
         XCTAssertTrue(suggestions.waitForExistence(timeout: 5))
         suggestions.tap()
 
-        XCTAssertTrue(app.staticTexts["SELECT A LEVEL"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["PICK A DESTINATION"].waitForExistence(timeout: 3))
         XCTAssertTrue(
             app.buttons.matching(
                 NSPredicate(format: "label CONTAINS %@", "SURPRISE ME")

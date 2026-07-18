@@ -110,8 +110,10 @@ internal enum L10n {
       internal static let accessibilityHint = L10n.tr("Localizable", "home.bonus.accessibility_hint", fallback: "Opens the retro suggestions map")
       /// BONUS MAP
       internal static let eyebrow = L10n.tr("Localizable", "home.bonus.eyebrow", fallback: "BONUS MAP")
-      /// 9 curious destinations
-      internal static let subtitle = L10n.tr("Localizable", "home.bonus.subtitle", fallback: "9 curious destinations")
+      /// %d curious destinations
+      internal static func subtitle(_ p1: Int) -> String {
+        return L10n.tr("Localizable", "home.bonus.subtitle", p1, fallback: "%d curious destinations")
+      }
       /// Explore unusual places
       internal static let title = L10n.tr("Localizable", "home.bonus.title", fallback: "Explore unusual places")
     }
@@ -149,14 +151,16 @@ internal enum L10n {
   internal enum Suggestions {
     /// BACK
     internal static let back = L10n.tr("Localizable", "suggestions.back", fallback: "BACK")
-    /// CURIOUS COORDINATES // 09
-    internal static let coordinateCount = L10n.tr("Localizable", "suggestions.coordinate_count", fallback: "CURIOUS COORDINATES // 09")
+    /// CURIOUS COORDINATES // %02d
+    internal static func coordinateCount(_ p1: Int) -> String {
+      return L10n.tr("Localizable", "suggestions.coordinate_count", p1, fallback: "CURIOUS COORDINATES // %02d")
+    }
     /// GO
     internal static let go = L10n.tr("Localizable", "suggestions.go", fallback: "GO")
+    /// PICK A DESTINATION
+    internal static let pickDestination = L10n.tr("Localizable", "suggestions.pick_destination", fallback: "PICK A DESTINATION")
     /// RANDOM DESTINATION
     internal static let randomDestination = L10n.tr("Localizable", "suggestions.random_destination", fallback: "RANDOM DESTINATION")
-    /// SELECT A LEVEL
-    internal static let selectLevel = L10n.tr("Localizable", "suggestions.select_level", fallback: "SELECT A LEVEL")
     /// SURPRISE ME
     internal static let surprise = L10n.tr("Localizable", "suggestions.surprise", fallback: "SURPRISE ME")
     internal enum Accessibility {
@@ -168,6 +172,18 @@ internal enum L10n {
       internal static func tile(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
         return L10n.tr("Localizable", "suggestions.accessibility.tile", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@, %@, coordinates %@")
       }
+    }
+    internal enum AntelopeCanyon {
+      /// Sandstone shaped by flash floods
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.antelope_canyon.subtitle", fallback: "Sandstone shaped by flash floods")
+      /// Antelope Canyon
+      internal static let title = L10n.tr("Localizable", "suggestions.antelope_canyon.title", fallback: "Antelope Canyon")
+    }
+    internal enum Aogashima {
+      /// A village inside a volcanic island
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.aogashima.subtitle", fallback: "A village inside a volcanic island")
+      /// Aogashima
+      internal static let title = L10n.tr("Localizable", "suggestions.aogashima.title", fallback: "Aogashima")
     }
     internal enum ApplePark {
       /// Cupertino's spaceship campus
@@ -193,6 +209,12 @@ internal enum L10n {
       /// CERN
       internal static let title = L10n.tr("Localizable", "suggestions.cern.title", fallback: "CERN")
     }
+    internal enum CrookedForest {
+      /// A grove of mysteriously bent pines
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.crooked_forest.subtitle", fallback: "A grove of mysteriously bent pines")
+      /// Crooked Forest
+      internal static let title = L10n.tr("Localizable", "suggestions.crooked_forest.title", fallback: "Crooked Forest")
+    }
     internal enum Darvaza {
       /// Darvaza gas crater
       internal static let locationName = L10n.tr("Localizable", "suggestions.darvaza.location_name", fallback: "Darvaza gas crater")
@@ -209,11 +231,77 @@ internal enum L10n {
       /// MISSION FAILED
       internal static let title = L10n.tr("Localizable", "suggestions.error.title", fallback: "MISSION FAILED")
     }
+    internal enum FlyGeyser {
+      /// A technicolor accidental geyser
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.fly_geyser.subtitle", fallback: "A technicolor accidental geyser")
+      /// Fly Geyser
+      internal static let title = L10n.tr("Localizable", "suggestions.fly_geyser.title", fallback: "Fly Geyser")
+    }
+    internal enum GiantsCauseway {
+      /// Basalt steps into the Atlantic
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.giants_causeway.subtitle", fallback: "Basalt steps into the Atlantic")
+      /// Giant's Causeway
+      internal static let title = L10n.tr("Localizable", "suggestions.giants_causeway.title", fallback: "Giant's Causeway")
+    }
+    internal enum GreatBlueHole {
+      /// A giant marine sinkhole
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.great_blue_hole.subtitle", fallback: "A giant marine sinkhole")
+      /// Great Blue Hole
+      internal static let title = L10n.tr("Localizable", "suggestions.great_blue_hole.title", fallback: "Great Blue Hole")
+    }
+    internal enum Hashima {
+      /// Abandoned battleship island
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.hashima.subtitle", fallback: "Abandoned battleship island")
+      /// Hashima Island
+      internal static let title = L10n.tr("Localizable", "suggestions.hashima.title", fallback: "Hashima Island")
+    }
+    internal enum LakeHillier {
+      /// Australia's bubblegum-pink lake
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.lake_hillier.subtitle", fallback: "Australia's bubblegum-pink lake")
+      /// Lake Hillier
+      internal static let title = L10n.tr("Localizable", "suggestions.lake_hillier.title", fallback: "Lake Hillier")
+    }
+    internal enum LencoisMaranhenses {
+      /// Rainwater lagoons among dunes
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.lencois_maranhenses.subtitle", fallback: "Rainwater lagoons among dunes")
+      /// Lençóis Maranhenses
+      internal static let title = L10n.tr("Localizable", "suggestions.lencois_maranhenses.title", fallback: "Lençóis Maranhenses")
+    }
+    internal enum MaunsellForts {
+      /// Sea forts on steel stilts
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.maunsell_forts.subtitle", fallback: "Sea forts on steel stilts")
+      /// Maunsell Forts
+      internal static let title = L10n.tr("Localizable", "suggestions.maunsell_forts.title", fallback: "Maunsell Forts")
+    }
+    internal enum MountRoraima {
+      /// A tabletop mountain above the clouds
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.mount_roraima.subtitle", fallback: "A tabletop mountain above the clouds")
+      /// Mount Roraima
+      internal static let title = L10n.tr("Localizable", "suggestions.mount_roraima.title", fallback: "Mount Roraima")
+    }
+    internal enum NazcaLines {
+      /// Ancient drawings across the desert
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.nazca_lines.subtitle", fallback: "Ancient drawings across the desert")
+      /// Nazca Lines
+      internal static let title = L10n.tr("Localizable", "suggestions.nazca_lines.title", fallback: "Nazca Lines")
+    }
     internal enum NullIsland {
       /// Where zero meets zero
       internal static let subtitle = L10n.tr("Localizable", "suggestions.null_island.subtitle", fallback: "Where zero meets zero")
       /// Null Island
       internal static let title = L10n.tr("Localizable", "suggestions.null_island.title", fallback: "Null Island")
+    }
+    internal enum Pamukkale {
+      /// White terraces of thermal water
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.pamukkale.subtitle", fallback: "White terraces of thermal water")
+      /// Pamukkale
+      internal static let title = L10n.tr("Localizable", "suggestions.pamukkale.title", fallback: "Pamukkale")
+    }
+    internal enum ParisCatacombs {
+      /// Bones beneath the City of Light
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.paris_catacombs.subtitle", fallback: "Bones beneath the City of Light")
+      /// Paris Catacombs
+      internal static let title = L10n.tr("Localizable", "suggestions.paris_catacombs.title", fallback: "Paris Catacombs")
     }
     internal enum PointNemo {
       /// Oceanic pole of inaccessibility
@@ -221,11 +309,29 @@ internal enum L10n {
       /// Point Nemo
       internal static let title = L10n.tr("Localizable", "suggestions.point_nemo.title", fallback: "Point Nemo")
     }
+    internal enum Pripyat {
+      /// A city frozen in 1986
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.pripyat.subtitle", fallback: "A city frozen in 1986")
+      /// Pripyat
+      internal static let title = L10n.tr("Localizable", "suggestions.pripyat.title", fallback: "Pripyat")
+    }
     internal enum RapaNui {
       /// Island of the moai
       internal static let subtitle = L10n.tr("Localizable", "suggestions.rapa_nui.subtitle", fallback: "Island of the moai")
       /// Rapa Nui
       internal static let title = L10n.tr("Localizable", "suggestions.rapa_nui.title", fallback: "Rapa Nui")
+    }
+    internal enum SalarDeUyuni {
+      /// The world's largest salt mirror
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.salar_de_uyuni.subtitle", fallback: "The world's largest salt mirror")
+      /// Salar de Uyuni
+      internal static let title = L10n.tr("Localizable", "suggestions.salar_de_uyuni.title", fallback: "Salar de Uyuni")
+    }
+    internal enum Socotra {
+      /// Dragon trees on an alien island
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.socotra.subtitle", fallback: "Dragon trees on an alien island")
+      /// Socotra
+      internal static let title = L10n.tr("Localizable", "suggestions.socotra.title", fallback: "Socotra")
     }
     internal enum Svalbard {
       /// Svalbard Global Seed Vault
@@ -234,6 +340,24 @@ internal enum L10n {
       internal static let subtitle = L10n.tr("Localizable", "suggestions.svalbard.subtitle", fallback: "Arctic crop time capsule")
       /// Svalbard Seed Vault
       internal static let title = L10n.tr("Localizable", "suggestions.svalbard.title", fallback: "Svalbard Seed Vault")
+    }
+    internal enum ThorsWell {
+      /// The Pacific's bottomless drain
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.thors_well.subtitle", fallback: "The Pacific's bottomless drain")
+      /// Thor's Well
+      internal static let title = L10n.tr("Localizable", "suggestions.thors_well.title", fallback: "Thor's Well")
+    }
+    internal enum Waitomo {
+      /// A cave lit by glowworms
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.waitomo.subtitle", fallback: "A cave lit by glowworms")
+      /// Waitomo Glowworm Cave
+      internal static let title = L10n.tr("Localizable", "suggestions.waitomo.title", fallback: "Waitomo Glowworm Cave")
+    }
+    internal enum ZhangyeDanxia {
+      /// China's rainbow mountains
+      internal static let subtitle = L10n.tr("Localizable", "suggestions.zhangye_danxia.subtitle", fallback: "China's rainbow mountains")
+      /// Zhangye Danxia
+      internal static let title = L10n.tr("Localizable", "suggestions.zhangye_danxia.title", fallback: "Zhangye Danxia")
     }
   }
   internal enum Wikipedia {
