@@ -1,4 +1,3 @@
-"common.cancel" = "Cancelar";
 "common.ok" = "Aceptar";
 
 "coordinate.error.latitude" = "La latitud debe estar entre -90 y 90.";

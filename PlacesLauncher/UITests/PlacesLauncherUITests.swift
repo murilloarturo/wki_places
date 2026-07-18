@@ -35,7 +35,8 @@ final class PlacesLauncherUITests: XCTestCase {
 
         XCTAssertTrue(app.textFields["Search for a place"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Open in Wikipedia"].exists)
-        XCTAssertTrue(app.buttons["Cancel"].exists)
+        XCTAssertTrue(app.navigationBars["Choose on Map"].buttons.firstMatch.exists)
+        XCTAssertFalse(app.buttons["Cancel"].exists)
         keepScreenshot(named: "CustomMap")
     }
 

@@ -3,7 +3,6 @@ import SwiftUI
 import UIKit
 
 struct CustomLocationView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @FocusState private var isSearchFocused: Bool
 
@@ -56,14 +55,6 @@ struct CustomLocationView: View {
             }
             .navigationTitle(L10n.Custom.title)
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(L10n.Common.cancel) {
-                        searchTask?.cancel()
-                        dismiss()
-                    }
-                }
-            }
             .onDisappear {
                 searchTask?.cancel()
             }
