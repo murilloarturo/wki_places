@@ -25,6 +25,7 @@ targets:
     sources:
       - path: App
       - path: Core
+      - path: DesignSystem
       - path: Features
       - path: Generated
       - path: Resources
