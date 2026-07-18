@@ -14,7 +14,8 @@ https://github.com/murilloarturo/wki_places
 
 - Keep the assignment in one repository.
 - Work locally with git and push branches to GitHub.
-- Separate major work into deliverables and isolated worktrees.
+- Use exactly two active feature worktrees: one for Wikipedia and one for the Places app.
+- The Places worktree starts with design; launcher implementation is blocked until Arturo approves the design direction.
 - Do not merge feature branches into `main` without Arturo's explicit approval.
 - When in doubt, pause and ask Arturo before choosing a risky direction.
 - After the Wikipedia and Places launcher streams are ready, stop and ask Arturo to test both apps before any merge.
@@ -33,41 +34,50 @@ wki_places/
 
 The exact Xcode layout may change after inspecting the Wikipedia project. If adding the launcher as a second app target inside the same workspace is cleaner for reviewers, prefer that over forcing a separate project.
 
-## Deliverable 1: Product and UI Design
+## Deliverable 1: Places Product and UI Design
 
 Branch:
 
 ```text
-codex/design-direction
+codex/places-launcher-app
 ```
 
 Worktree:
 
 ```text
-/Users/arturo/Developer/wki_places_design
+/Users/arturo/Developer/wki_places_places
 ```
 
 Purpose:
 
-- Define the Places launcher experience before implementation.
-- Keep the app simple enough for an assignment but polished enough to feel intentional.
-- Create a playful screen concept that still demonstrates the core requirement clearly.
+- Define the Places launcher experience before implementation in the same branch that will later contain the app.
+- Use a polished Apple-style visual language for the normal app experience.
+- Give the visible Suggestions experience a distinct retro game-map style.
+- Restore the normal Apple-style appearance when the user leaves Suggestions.
 
 Design scope:
 
 - Main SwiftUI screen layout.
 - Location list treatment.
-- Custom coordinate entry flow.
+- Apple Maps custom-location selection flow.
 - Loading, empty, error, and validation states.
 - Accessibility labels/hints strategy.
-- Small fun details and easter eggs that do not distract from the assignment.
+- A visible Suggestions section with fun destinations; no hidden codes are required.
 
-Possible playful touches:
+Initial Suggestions candidates:
 
-- A curated "fun jumps" section with locations such as Area 51, Null Island, CERN, the Bermuda Triangle, or other memorable coordinates.
-- A Konami-code-style hidden action that reveals bonus locations or random "adventure" suggestions.
-- A "surprise me" location button.
-- Copy that feels light and clever while still being professional.
+- Apple Park, Cupertino (`37.334887, -122.008996`).
+- Area 51, Nevada (`37.2350, -115.8111`).
+- CERN, near Geneva (`46.2330, 6.0557`).
+- Rapa Nui / Easter Island (`-27.1170, -109.3670`).
+- Svalbard Global Seed Vault (`78.235729, 15.491244`).
+- Point Nemo (`-48.8767, -123.3933`).
+- Null Island (`0, 0`).
+- Bermuda Triangle (`25, -71`).
+- Darvaza gas crater (`40.2525, 58.4393`).
+- A "Surprise me" action that chooses from the curated set.
+
+The final set should favor coordinates with useful nearby Wikipedia results. Coordinates and display copy will be verified before they are shipped as app data.
 
 Output:
 
@@ -78,6 +88,7 @@ Output:
 Acceptance:
 
 - Arturo approves the design direction before implementation starts.
+- Approval covers both the default Apple-style screen and the temporary retro Suggestions mode.
 
 ## Deliverable 2: Wikipedia Deep Link Support
 
@@ -148,7 +159,7 @@ codex/places-launcher-app
 Worktree:
 
 ```text
-/Users/arturo/Developer/wki_places_launcher
+/Users/arturo/Developer/wki_places_places
 ```
 
 Purpose:
@@ -158,6 +169,10 @@ Purpose:
 - Open Wikipedia using the new Places deep link.
 - Include custom coordinate entry.
 - Include the approved design personality and easter eggs.
+
+Implementation gate:
+
+- Do not start this deliverable until Arturo approves Deliverable 1.
 
 Required feed:
 
@@ -173,19 +188,28 @@ Phases:
 4. Display loading, success, error, and retry states.
 5. Show fetched locations in an accessible list.
 6. Handle unnamed locations with coordinate-based display names.
-7. Add custom latitude/longitude entry and validation.
-8. Generate the Wikipedia Places deep link.
-9. Open Wikipedia through `UIApplication.open`.
-10. Add approved easter eggs and fun suggested locations.
-11. Add unit tests for decoding, validation, and URL generation.
+7. Generate the Wikipedia Places deep link.
+8. Open Wikipedia through `UIApplication.open`.
+9. Implement the visible Suggestions section and its retro game-map presentation.
+10. Restore the normal presentation when navigating back from Suggestions.
+11. Add unit tests for decoding, state handling, suggestion selection, and URL generation.
+12. As the final app phase, add custom location selection with Apple Maps:
+    - Present a map with a location search text field.
+    - Geocode typed place names and move the map to the result.
+    - Allow the user to drag/pan the map and choose the map-center coordinate.
+    - Provide a clear Confirm button that opens Wikipedia at the selected coordinate.
+    - Add validation, error, cancellation, VoiceOver, and Dynamic Type behavior.
+    - Keep geocoding and selection state behind testable protocols/models, with unit tests for confirmation and error paths.
 
 Validation:
 
 - Launcher builds locally.
 - Remote feed loads.
 - Tapping a fetched location opens Wikipedia.
-- Custom coordinates open Wikipedia.
-- Invalid custom input is blocked with a clear UI state.
+- Searching for a custom place moves Apple Maps to the resolved location.
+- Dragging the map allows a coordinate to be selected and confirmed.
+- Confirming a custom map location opens Wikipedia at that coordinate.
+- Invalid or unresolved custom searches show a clear UI state.
 - Accessibility labels/hints are present for key controls.
 - Unit tests pass.
 
@@ -195,36 +219,25 @@ Output:
 - Summary of app structure and test coverage.
 - Manual test instructions for Arturo.
 
-## Deliverable 4: Integration, README, and Test Gate
-
-Branch:
-
-```text
-codex/integration-readme
-```
-
-Worktree:
-
-```text
-/Users/arturo/Developer/wki_places_integration
-```
+## Deliverable 4: README, Cross-App Testing, and Merge Gate
 
 Purpose:
 
-- Bring the completed Wikipedia and launcher branches together only after both are ready.
+- Test the completed Wikipedia and launcher branches together while they remain in their separate worktrees.
 - Prepare reviewer-facing documentation.
 - Stop before merging into `main`.
 
 Phases:
 
-1. Create an integration branch from latest `main`.
-2. Bring in the completed Wikipedia and launcher work for integration testing.
-3. Resolve conflicts if any.
-4. Write or update `README.md`.
-5. Add final setup, run, test, and troubleshooting instructions.
+1. Finish and push both feature branches.
+2. Install/run Wikipedia from the Wikipedia worktree.
+3. Install/run Places from the Places worktree against the same Simulator.
+4. Exercise feed locations, Suggestions, and Apple Maps custom-location selection end to end.
+5. Draft the relevant setup and testing notes in each feature branch.
 6. Confirm license/attribution notes for the copied Wikipedia source.
-7. Push the integration branch.
-8. Ask Arturo to test both apps.
+7. Ask Arturo to test both apps before any feature branch is merged.
+8. After Arturo approves, agree on merge order and resolve any integration conflicts.
+9. Complete the root `README.md` as part of the approved integration work.
 
 README must include:
 
@@ -241,10 +254,10 @@ README must include:
 
 Merge rule:
 
-- Do not merge `codex/integration-readme` into `main`.
-- Arturo tests first.
-- Arturo explicitly approves the merge.
-- Only then perform the merge if Arturo asks for it.
+- Do not merge either feature branch into `main` automatically.
+- Do not create a third integration worktree unless Arturo later asks for one.
+- Arturo tests both apps first and explicitly approves the merge.
+- Only perform a merge when Arturo asks for it, using the order agreed at that point.
 
 ## Final Validation Checklist
 
@@ -252,8 +265,9 @@ Merge rule:
 - Places launcher app builds locally.
 - Fetched locations appear in the launcher.
 - Tapping a fetched location opens Wikipedia to Places at that coordinate.
-- Custom coordinates open Wikipedia to Places at that coordinate.
-- Invalid custom coordinates are rejected in the launcher.
+- A searched or map-selected custom location opens Wikipedia to Places at that coordinate.
+- Invalid or unresolved custom location searches are handled clearly.
+- Suggestions switch to the retro game-map style and Back restores the normal style.
 - Normal Wikipedia Places behavior still works when opened without coordinates.
 - Unit tests pass where practical.
 - README is complete enough for a reviewer to clone and run the assignment.
