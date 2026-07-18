@@ -5,6 +5,7 @@ struct PlacesHomeView: View {
     let wikipediaOpener: any WikipediaOpening
 
     @State private var alertMessage: String?
+    @State private var feedTask: Task<Void, Never>?
 
     var body: some View {
         NavigationStack {
@@ -20,8 +21,12 @@ struct PlacesHomeView: View {
             }
             .background(Color(uiColor: .systemGroupedBackground))
             .toolbar(.hidden, for: .navigationBar)
-            .task {
-                await viewModel.loadIfNeeded()
+            .onAppear {
+                refreshFeed()
+            }
+            .onDisappear {
+                feedTask?.cancel()
+                feedTask = nil
             }
             .alert(
                 L10n.Wikipedia.Error.title,
@@ -147,7 +152,7 @@ struct PlacesHomeView: View {
             Group {
                 switch viewModel.state {
                 case .idle, .loading:
-                    loadingState
+                    FeedLoadingView()
                 case let .loaded(locations) where locations.isEmpty:
                     emptyState
                 case let .loaded(locations):
@@ -158,17 +163,6 @@ struct PlacesHomeView: View {
             }
             .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 8))
         }
-    }
-
-    private var loadingState: some View {
-        HStack(spacing: 12) {
-            ProgressView()
-            Text(L10n.Feed.loading)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, minHeight: 88)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(L10n.Feed.loading)
     }
 
     private var emptyState: some View {
@@ -212,7 +206,7 @@ struct PlacesHomeView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             Button {
-                Task { await viewModel.load() }
+                refreshFeed()
             } label: {
                 Label(L10n.Feed.retry, systemImage: "arrow.clockwise")
             }
@@ -221,6 +215,13 @@ struct PlacesHomeView: View {
         .frame(maxWidth: .infinity, minHeight: 190)
         .padding()
         .accessibilityElement(children: .contain)
+    }
+
+    private func refreshFeed() {
+        feedTask?.cancel()
+        feedTask = Task {
+            await viewModel.load()
+        }
     }
 
     private func openInWikipedia(_ location: PlaceLocation) {

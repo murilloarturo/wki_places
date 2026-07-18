@@ -7,7 +7,10 @@ final class LocationFeedViewModelTests: XCTestCase {
     func testLoadMovesThroughLoadingToLoaded() async {
         let locations = [PlaceLocation(name: "Mumbai", latitude: 19.0821978, longitude: 72.7411)]
         let viewModel = LocationFeedViewModel(
-            client: DelayedFeedClient(result: .success(locations), nanoseconds: 20_000_000)
+            client: DelayedHTTPClient(
+                result: .success(LocationFeedResponse(locations: locations)),
+                nanoseconds: 20_000_000
+            )
         )
 
         let task = Task { await viewModel.load() }
@@ -20,7 +23,7 @@ final class LocationFeedViewModelTests: XCTestCase {
 
     func testLoadExposesReadableFailureAndRetryCanRecoverWithNewClientState() async {
         let viewModel = LocationFeedViewModel(
-            client: DelayedFeedClient(result: .failure(TestFeedError.offline), nanoseconds: 0)
+            client: DelayedHTTPClient(result: .failure(TestFeedError.offline), nanoseconds: 0)
         )
 
         await viewModel.load()
@@ -28,28 +31,54 @@ final class LocationFeedViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.state, .failed("The network is offline."))
     }
 
-    func testLoadIfNeededDoesNotReplaceExistingResults() async {
-        let location = PlaceLocation(name: "Amsterdam", latitude: 52.35, longitude: 4.83)
-        let viewModel = LocationFeedViewModel(
-            client: DelayedFeedClient(result: .success([location]), nanoseconds: 0)
-        )
+    func testEachLoadRequestsLocationsFromClient() async {
+        let first = PlaceLocation(name: "Amsterdam", latitude: 52.35, longitude: 4.83)
+        let second = PlaceLocation(name: "London", latitude: 51.5285582, longitude: -0.241679)
+        let client = SequencedHTTPClient(responses: [
+            LocationFeedResponse(locations: [first]),
+            LocationFeedResponse(locations: [second])
+        ])
+        let viewModel = LocationFeedViewModel(client: client)
 
         await viewModel.load()
-        await viewModel.loadIfNeeded()
+        XCTAssertEqual(viewModel.state, .loaded([first]))
 
-        XCTAssertEqual(viewModel.state, .loaded([location]))
+        await viewModel.load()
+        XCTAssertEqual(viewModel.state, .loaded([second]))
+        XCTAssertEqual(client.callCount, 2)
     }
 }
 
-private struct DelayedFeedClient: LocationFeedClient {
-    let result: Result<[PlaceLocation], Error>
+private final class SequencedHTTPClient: HTTPClient {
+    private var responses: [LocationFeedResponse]
+    private(set) var callCount = 0
+
+    init(responses: [LocationFeedResponse]) {
+        self.responses = responses
+    }
+
+    func fetch<Value: Codable>(
+        _ type: Value.Type,
+        from endpoint: HTTPEndpoint
+    ) async throws -> Value {
+        let response = responses[callCount]
+        callCount += 1
+        return response as! Value
+    }
+}
+
+private struct DelayedHTTPClient: HTTPClient {
+    let result: Result<LocationFeedResponse, Error>
     let nanoseconds: UInt64
 
-    func fetchLocations() async throws -> [PlaceLocation] {
+    func fetch<Value: Codable>(
+        _ type: Value.Type,
+        from endpoint: HTTPEndpoint
+    ) async throws -> Value {
         if nanoseconds > 0 {
             try await Task.sleep(nanoseconds: nanoseconds)
         }
-        return try result.get()
+        return try result.get() as! Value
     }
 }
 
@@ -60,4 +89,3 @@ private enum TestFeedError: LocalizedError {
         "The network is offline."
     }
 }
-

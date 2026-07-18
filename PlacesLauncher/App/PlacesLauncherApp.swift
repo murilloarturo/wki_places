@@ -6,7 +6,7 @@ struct PlacesLauncherApp: App {
 
     init() {
         _feedViewModel = StateObject(
-            wrappedValue: LocationFeedViewModel(client: URLSessionLocationFeedClient())
+            wrappedValue: LocationFeedViewModel(client: JSONHTTPClient())
         )
     }
 
@@ -28,4 +28,3 @@ enum AppPalette {
     static let secondaryInk = Color(red: 0.36, green: 0.38, blue: 0.42)
     static let surface = Color(uiColor: .secondarySystemGroupedBackground)
 }
-

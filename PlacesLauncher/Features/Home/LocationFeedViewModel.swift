@@ -11,25 +11,25 @@ enum LocationFeedState: Equatable {
 final class LocationFeedViewModel: ObservableObject {
     @Published private(set) var state: LocationFeedState = .idle
 
-    private let client: any LocationFeedClient
+    private let client: any HTTPClient
+    private let endpoint: HTTPEndpoint
 
-    init(client: any LocationFeedClient) {
+    init(
+        client: any HTTPClient,
+        endpoint: HTTPEndpoint = LocationFeedEndpoint.assignment
+    ) {
         self.client = client
-    }
-
-    func loadIfNeeded() async {
-        guard state == .idle else { return }
-        await load()
+        self.endpoint = endpoint
     }
 
     func load() async {
         state = .loading
         do {
-            let locations = try await client.fetchLocations()
+            let response = try await client.fetch(LocationFeedResponse.self, from: endpoint)
             try Task.checkCancellation()
-            state = .loaded(locations)
+            state = .loaded(response.locations)
         } catch is CancellationError {
-            state = .idle
+            return
         } catch {
             state = .failed(
                 (error as? LocalizedError)?.errorDescription

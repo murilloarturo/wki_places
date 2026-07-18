@@ -58,7 +58,7 @@ The UI suite includes an end-to-end Wikipedia handoff test. It accepts the iOS e
 
 ## Behavior
 
-- Home fetches `locations.json` with Swift Concurrency and handles loading, success, empty, failure, and retry states.
+- Home fetches `locations.json` on every screen entry with Swift Concurrency and handles animated loading, success, empty, failure, and retry states.
 - Location names are optional. Unnamed feed entries display as `Unnamed location` with their coordinates.
 - A location opens `wikipedia://places?lat=...&lon=...`.
 - Suggestions switches the entire screen to a retro game-map treatment and includes a deterministic-testable Surprise Me action.
@@ -81,7 +81,7 @@ PlacesLauncher/
 
 ## Configuration
 
-No secrets or environment variables are required. The public assignment feed URL is defined by `LocationFeedEndpoint.assignment`.
+No secrets or environment variables are required. The public assignment feed URL and its 30-minute cache lifetime are defined by `LocationFeedEndpoint.assignment`. Home asks the generic `JSONHTTPClient` for the feed on every entry; the client returns a valid cached response or reloads it after expiry.
 
 ## License
 

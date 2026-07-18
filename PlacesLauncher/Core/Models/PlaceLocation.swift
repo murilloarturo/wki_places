@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 
-struct LocationFeedResponse: Decodable, Equatable, Sendable {
+struct LocationFeedResponse: Codable, Equatable, Sendable {
     let locations: [PlaceLocation]
 }
 
