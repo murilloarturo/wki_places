@@ -19,35 +19,7 @@ final class JSONHTTPClientTests: XCTestCase {
             LocationDTO(name: "Copenhagen", latitude: 55.6713442, longitude: 12.523785)
         ])
         XCTAssertEqual(loader.requests.map(\.url), [LocationFeedEndpoint.assignment.url])
-    }
-
-    func testFetchUsesCachedResponseForThirtyMinutesThenReloads() async throws {
-        let clock = TestClock(now: Date(timeIntervalSince1970: 1_000))
-        let loader = StubHTTPDataLoader(responses: [
-            .success((feedData(name: "First"), httpResponse(status: 200))),
-            .success((feedData(name: "Fresh"), httpResponse(status: 200)))
-        ])
-        let client = JSONHTTPClient(dataLoader: loader, now: { clock.now })
-
-        let first = try await client.fetch(
-            LocationFeedDTO.self,
-            from: LocationFeedEndpoint.assignment
-        )
-        clock.advance(by: 29 * 60)
-        let cached = try await client.fetch(
-            LocationFeedDTO.self,
-            from: LocationFeedEndpoint.assignment
-        )
-        clock.advance(by: 61)
-        let fresh = try await client.fetch(
-            LocationFeedDTO.self,
-            from: LocationFeedEndpoint.assignment
-        )
-
-        XCTAssertEqual(first.locations.first?.name, "First")
-        XCTAssertEqual(cached.locations.first?.name, "First")
-        XCTAssertEqual(fresh.locations.first?.name, "Fresh")
-        XCTAssertEqual(loader.requests.count, 2)
+        XCTAssertEqual(loader.requests.first?.cachePolicy, .useProtocolCachePolicy)
     }
 
     func testFetchMapsHTTPFailure() async {
@@ -113,17 +85,5 @@ private final class StubHTTPDataLoader: HTTPDataLoading {
     func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         requests.append(request)
         return try responses.removeFirst().get()
-    }
-}
-
-private final class TestClock {
-    private(set) var now: Date
-
-    init(now: Date) {
-        self.now = now
-    }
-
-    func advance(by interval: TimeInterval) {
-        now.addTimeInterval(interval)
     }
 }

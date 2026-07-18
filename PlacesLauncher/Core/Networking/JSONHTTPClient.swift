@@ -2,15 +2,13 @@ import Foundation
 
 struct HTTPEndpoint: Equatable {
     let url: URL
-    let cacheLifetime: TimeInterval
 }
 
 enum LocationFeedEndpoint {
     static let assignment = HTTPEndpoint(
         url: URL(
             string: "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
-        )!,
-        cacheLifetime: 30 * 60
+        )!
     )
 }
 
@@ -48,56 +46,24 @@ enum HTTPClientError: LocalizedError, Equatable {
     }
 }
 
-actor HTTPResponseCache {
-    private struct Entry {
-        let data: Data
-        let expiresAt: Date
-    }
-
-    private var entries: [URL: Entry] = [:]
-
-    func data(for url: URL, at date: Date) -> Data? {
-        guard let entry = entries[url] else { return nil }
-        guard entry.expiresAt > date else {
-            entries[url] = nil
-            return nil
-        }
-        return entry.data
-    }
-
-    func insert(_ data: Data, for url: URL, expiresAt: Date) {
-        entries[url] = Entry(data: data, expiresAt: expiresAt)
-    }
-}
-
 struct JSONHTTPClient: HTTPClient {
     private let dataLoader: any HTTPDataLoading
     private let decoder: JSONDecoder
-    private let cache: HTTPResponseCache
-    private let now: () -> Date
 
     init(
         dataLoader: (any HTTPDataLoading)? = nil,
-        decoder: JSONDecoder = JSONDecoder(),
-        cache: HTTPResponseCache = HTTPResponseCache(),
-        now: @escaping () -> Date = Date.init
+        decoder: JSONDecoder = JSONDecoder()
     ) {
-        self.dataLoader = dataLoader ?? Self.makeSession()
+        self.dataLoader = dataLoader ?? URLSession.shared
         self.decoder = decoder
-        self.cache = cache
-        self.now = now
     }
 
     func fetch<Value: Codable>(
         _ type: Value.Type,
         from endpoint: HTTPEndpoint
     ) async throws -> Value {
-        let requestDate = now()
-        if let cachedData = await cache.data(for: endpoint.url, at: requestDate) {
-            return try decode(type, from: cachedData)
-        }
-
-        let (data, response) = try await dataLoader.data(for: URLRequest(url: endpoint.url))
+        let request = URLRequest(url: endpoint.url)
+        let (data, response) = try await dataLoader.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw HTTPClientError.invalidResponse
         }
@@ -105,13 +71,7 @@ struct JSONHTTPClient: HTTPClient {
             throw HTTPClientError.httpStatus(httpResponse.statusCode)
         }
 
-        let value = try decode(type, from: data)
-        await cache.insert(
-            data,
-            for: endpoint.url,
-            expiresAt: requestDate.addingTimeInterval(endpoint.cacheLifetime)
-        )
-        return value
+        return try decode(type, from: data)
     }
 
     private func decode<Value: Codable>(
@@ -123,11 +83,5 @@ struct JSONHTTPClient: HTTPClient {
         } catch {
             throw HTTPClientError.decodingFailed
         }
-    }
-
-    private static func makeSession() -> URLSession {
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.urlCache = nil
-        return URLSession(configuration: configuration)
     }
 }

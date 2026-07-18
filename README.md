@@ -86,7 +86,7 @@ PlacesLauncher/
 
 ## Configuration
 
-No secrets or environment variables are required. The public assignment feed URL and its 30-minute cache lifetime are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry; its concrete implementation asks the generic `JSONHTTPClient` for a valid cached response or reloads it after expiry.
+No secrets or environment variables are required. The public assignment feed URL is defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses the native `URLSession` protocol cache policy, so standard HTTP response headers control caching and revalidation.
 
 ## License
 
