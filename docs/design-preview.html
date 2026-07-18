@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Places Launcher - Design Review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      --ink: #17181b;
+      --muted: #6e737d;
+      --paper: #f5f6f8;
+      --line: #d8dbe0;
+      --blue: #0879ff;
+      --cyan: #42f5e9;
+      --magenta: #ff4ea3;
+      --yellow: #ffe45c;
+      --mint: #69f0ae;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: #e9eaed;
+      letter-spacing: 0;
+    }
+
+    button, input { font: inherit; letter-spacing: 0; }
+
+    .review-shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 34px 24px 56px;
+    }
+
+    .review-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .review-title { margin: 0; font-size: 28px; line-height: 1.1; font-weight: 760; }
+    .review-subtitle { margin: 7px 0 0; color: #5f646d; font-size: 15px; }
+
+    .review-tabs {
+      display: inline-flex;
+      padding: 4px;
+      gap: 2px;
+      border: 1px solid #cbcdd2;
+      border-radius: 8px;
+      background: rgba(255,255,255,.72);
+    }
+
+    .review-tabs button {
+      min-height: 34px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 6px;
+      color: #4c5058;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .review-tabs button[aria-selected="true"] {
+      color: #111216;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(30,32,36,.16);
+    }
+
+    .stage {
+      min-height: 900px;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      border: 1px solid #d0d2d6;
+      border-radius: 8px;
+      background:
+        linear-gradient(rgba(255,255,255,.65), rgba(255,255,255,.65)),
+        repeating-linear-gradient(90deg, transparent 0 39px, rgba(20,22,26,.035) 39px 40px),
+        repeating-linear-gradient(0deg, transparent 0 39px, rgba(20,22,26,.035) 39px 40px);
+    }
+
+    .phone {
+      position: relative;
+      width: min(390px, 100%);
+      height: 844px;
+      overflow: hidden;
+      border: 8px solid #17181b;
+      border-radius: 48px;
+      background: var(--paper);
+      box-shadow: 0 28px 64px rgba(24,26,31,.24), 0 4px 12px rgba(24,26,31,.14);
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      z-index: 50;
+      top: 10px;
+      left: 50%;
+      width: 114px;
+      height: 30px;
+      transform: translateX(-50%);
+      border-radius: 18px;
+      background: #090a0c;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      overflow: hidden;
+    }
+
+    .screen.active { display: block; }
+
+    .status-bar {
+      position: relative;
+      z-index: 20;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 21px 0;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .status-icons { display: flex; align-items: center; gap: 5px; }
+    .signal { width: 14px; height: 8px; border-bottom: 2px solid currentColor; border-left: 2px solid currentColor; transform: skew(-18deg); }
+    .wifi { width: 12px; height: 8px; border-top: 2px solid currentColor; border-radius: 50%; }
+    .battery { width: 19px; height: 9px; border: 1.5px solid currentColor; border-radius: 3px; box-shadow: inset 0 0 0 2px transparent; }
+    .battery::after { content: ""; display: block; width: 13px; height: 5px; margin: 1px; border-radius: 1px; background: currentColor; }
+
+    .home-screen { background: #f7f7f9; }
+
+    .home-scroll { height: calc(100% - 78px); overflow: hidden; padding: 10px 20px 104px; }
+    .eyebrow { margin: 0 0 4px; color: var(--blue); font-size: 12px; font-weight: 760; text-transform: uppercase; }
+    .home-title { margin: 0; font-size: 34px; line-height: 1.05; font-weight: 780; }
+    .home-copy { margin: 7px 0 21px; max-width: 310px; color: var(--muted); font-size: 15px; line-height: 1.35; }
+
+    .map-command {
+      width: 100%;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--blue);
+      cursor: pointer;
+      text-align: left;
+      box-shadow: 0 5px 14px rgba(8,121,255,.22);
+    }
+
+    .command-icon {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: rgba(255,255,255,.18);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .command-label { font-size: 16px; font-weight: 700; }
+    .command-detail { display: block; margin-top: 2px; color: rgba(255,255,255,.76); font-size: 12px; font-weight: 500; }
+    .chevron { margin-left: auto; font-size: 22px; font-weight: 400; }
+
+    .suggestion-entry {
+      position: relative;
+      width: 100%;
+      min-height: 116px;
+      margin-top: 14px;
+      overflow: hidden;
+      display: flex;
+      align-items: end;
+      padding: 16px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #181921;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .suggestion-entry::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .45;
+      background:
+        linear-gradient(90deg, transparent 23px, rgba(66,245,233,.25) 24px, transparent 25px),
+        linear-gradient(0deg, transparent 23px, rgba(255,78,163,.22) 24px, transparent 25px);
+      background-size: 24px 24px;
+    }
+
+    .suggestion-entry::after {
+      content: "51";
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      color: var(--yellow);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 50px;
+      font-weight: 900;
+      opacity: .88;
+    }
+
+    .entry-copy { position: relative; z-index: 2; }
+    .entry-kicker { color: var(--cyan); font: 700 11px ui-monospace, SFMono-Regular, Menlo, monospace; text-transform: uppercase; }
+    .entry-title { display: block; margin-top: 5px; font-size: 18px; font-weight: 760; }
+    .entry-subtitle { display: block; margin-top: 3px; color: #c2c5d0; font-size: 12px; }
+
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin: 25px 2px 6px; }
+    .section-title { margin: 0; font-size: 19px; font-weight: 760; }
+    .count { color: var(--muted); font-size: 12px; }
+    .location-list { border-top: 1px solid var(--line); }
+
+    .location-row {
+      min-height: 64px;
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .row-icon { width: 28px; height: 28px; display: grid; place-items: center; color: var(--blue); font-size: 15px; border-radius: 50%; background: #e5f1ff; }
+    .row-title { font-size: 15px; font-weight: 660; }
+    .row-detail { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .row-chevron { color: #9a9ea6; font-size: 20px; }
+
+    .tab-bar {
+      position: absolute;
+      z-index: 30;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 9px 22px 20px;
+      border-top: 1px solid rgba(125,128,135,.24);
+      background: rgba(250,250,252,.93);
+      backdrop-filter: blur(18px);
+    }
+
+    .tab-item { display: grid; place-items: center; align-content: start; gap: 3px; color: #8a8e96; font-size: 10px; font-weight: 580; }
+    .tab-item.active { color: var(--blue); }
+    .tab-glyph { font-size: 19px; line-height: 1; }
+
+    .retro-screen {
+      color: #f8f4e8;
+      background: #15151c;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+    }
+
+    .retro-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .19;
+      background:
+        linear-gradient(90deg, transparent 31px, rgba(66,245,233,.35) 32px, transparent 33px),
+        linear-gradient(0deg, transparent 31px, rgba(66,245,233,.25) 32px, transparent 33px);
+      background-size: 32px 32px;
+    }
+
+    .retro-noise { position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 4px); }
+    .retro-content { position: relative; z-index: 5; height: calc(100% - 52px); padding: 8px 17px 22px; overflow: hidden; }
+
+    .retro-nav { display: flex; align-items: center; justify-content: space-between; min-height: 42px; }
+    .back-button { min-width: 44px; min-height: 44px; border: 0; color: var(--cyan); background: transparent; cursor: pointer; font: 800 16px ui-monospace, monospace; text-align: left; }
+    .level { color: var(--yellow); font-size: 11px; font-weight: 800; }
+    .retro-kicker { margin: 16px 0 5px; color: var(--magenta); font-size: 11px; font-weight: 850; text-transform: uppercase; }
+    .retro-title { margin: 0; max-width: 330px; color: #fff; font-size: 28px; line-height: 1.06; font-weight: 950; text-transform: uppercase; }
+    .retro-copy { margin: 9px 0 18px; color: #b9bcc7; font-size: 12px; line-height: 1.45; }
+
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .mission {
+      position: relative;
+      min-height: 111px;
+      padding: 12px;
+      overflow: hidden;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      color: var(--cyan);
+      background: rgba(16,17,23,.88);
+      text-align: left;
+    }
+
+    .mission.magenta { color: var(--magenta); }
+    .mission.yellow { color: var(--yellow); }
+    .mission.mint { color: var(--mint); }
+    .mission-index { font-size: 10px; font-weight: 900; }
+    .mission-name { display: block; margin-top: 17px; color: #fff; font-size: 14px; line-height: 1.08; font-weight: 850; text-transform: uppercase; }
+    .mission-coordinate { display: block; margin-top: 6px; color: #969ba7; font-size: 9px; }
+    .pixel-marker { position: absolute; right: 10px; top: 10px; width: 8px; height: 8px; background: currentColor; box-shadow: 8px 0 currentColor, 0 8px currentColor; }
+
+    .random-button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 12px;
+      border: 2px solid var(--yellow);
+      border-radius: 4px;
+      color: #15151c;
+      background: var(--yellow);
+      cursor: pointer;
+      font: 900 13px ui-monospace, monospace;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0 var(--magenta);
+    }
+
+    .retro-status { margin-top: 15px; display: flex; align-items: center; justify-content: space-between; color: #777c88; font-size: 9px; text-transform: uppercase; }
+    .blink-dot { width: 7px; height: 7px; display: inline-block; margin-right: 6px; background: var(--mint); }
+
+    .map-screen { background: #e7e9df; }
+    .map-canvas { position: absolute; inset: 0; overflow: hidden; background: #dce7d0; }
+    .water { position: absolute; right: -54px; top: 0; width: 170px; height: 100%; transform: rotate(4deg); background: #b9dff1; }
+    .park { position: absolute; left: 15px; top: 248px; width: 118px; height: 172px; border-radius: 48% 40% 44% 32%; background: #bbdca8; }
+    .block { position: absolute; border: 1px solid #c7cabe; border-radius: 7px; background: #eef0e8; }
+    .b1 { left: 29px; top: 118px; width: 105px; height: 70px; transform: rotate(-5deg); }
+    .b2 { left: 172px; top: 166px; width: 94px; height: 105px; transform: rotate(7deg); }
+    .b3 { left: 63px; top: 489px; width: 132px; height: 84px; transform: rotate(-3deg); }
+    .road { position: absolute; background: #fff; border: 1px solid #d1d1ca; box-shadow: 0 0 0 1px rgba(255,255,255,.5); }
+    .road.vertical { left: 145px; top: -30px; width: 26px; height: 900px; transform: rotate(8deg); }
+    .road.horizontal { left: -40px; top: 380px; width: 470px; height: 28px; transform: rotate(-8deg); }
+    .road.diagonal { left: 50px; top: 120px; width: 380px; height: 19px; transform: rotate(36deg); }
+    .road-label { position: absolute; z-index: 3; color: #858982; font-size: 9px; font-weight: 650; transform: rotate(-8deg); }
+    .label-one { left: 176px; top: 325px; }
+    .label-two { left: 52px; top: 443px; }
+
+    .map-top { position: relative; z-index: 10; padding: 2px 14px 0; }
+    .map-nav { height: 43px; display: flex; align-items: center; justify-content: space-between; }
+    .map-back { width: 44px; height: 44px; border: 0; color: var(--blue); background: transparent; cursor: pointer; font-size: 25px; text-align: left; }
+    .map-heading { font-size: 16px; font-weight: 760; }
+    .map-search {
+      width: 100%;
+      height: 47px;
+      padding: 0 42px;
+      border: 0;
+      border-radius: 8px;
+      color: #24262b;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 4px 14px rgba(37,42,38,.14);
+      outline: none;
+    }
+    .search-icon { position: absolute; left: 30px; top: 66px; z-index: 11; color: #73777e; font-size: 18px; }
+
+    .center-pin { position: absolute; z-index: 9; left: 50%; top: 43%; width: 38px; height: 38px; display: grid; place-items: center; transform: translate(-50%, -100%); border-radius: 50% 50% 50% 3px; color: white; background: #e94148; font-size: 17px; font-weight: 900; box-shadow: 0 8px 16px rgba(80,34,35,.25); rotate: -45deg; }
+    .center-pin span { rotate: 45deg; }
+    .pin-shadow { position: absolute; z-index: 8; left: 50%; top: 43%; width: 22px; height: 7px; transform: translate(-50%, 6px); border-radius: 50%; background: rgba(46,51,47,.22); }
+
+    .map-sheet {
+      position: absolute;
+      z-index: 15;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      padding: 11px 14px 17px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.96);
+      box-shadow: 0 8px 30px rgba(33,38,35,.22);
+      backdrop-filter: blur(20px);
+    }
+    .grabber { width: 34px; height: 4px; margin: 0 auto 13px; border-radius: 3px; background: #cfd1d5; }
+    .selection-kicker { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .selection-title { margin: 5px 0 0; font-size: 20px; font-weight: 760; }
+    .selection-coordinate { margin: 4px 0 14px; color: var(--muted); font-size: 12px; }
+    .confirm-button { width: 100%; min-height: 48px; border: 0; border-radius: 8px; color: white; background: var(--blue); cursor: pointer; font-size: 16px; font-weight: 740; }
+    .map-hint { margin: 10px 0 0; color: #7a7e85; font-size: 11px; line-height: 1.3; text-align: center; }
+
+    .review-note { margin: 18px 0 0; color: #686d75; font-size: 13px; text-align: center; }
+
+    @media (max-width: 700px) {
+      .review-shell { padding: 20px 10px 34px; }
+      .review-header { align-items: stretch; flex-direction: column; gap: 15px; }
+      .review-tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
+      .review-tabs button { padding: 0 8px; }
+      .stage { min-height: 760px; padding: 10px; }
+      .phone { width: 348px; height: 752px; border-radius: 42px; }
+      .home-scroll { transform: scale(.9); transform-origin: top center; width: 111.111%; margin-left: -5.555%; }
+      .retro-content { transform: scale(.9); transform-origin: top center; width: 111.111%; margin-left: -5.555%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="review-shell">
+    <header class="review-header">
+      <div>
+        <h1 class="review-title">Places Launcher</h1>
+        <p class="review-subtitle">Design review: everyday exploration, playful suggestions, and map selection.</p>
+      </div>
+      <nav class="review-tabs" aria-label="Preview screen">
+        <button type="button" data-screen-target="home" aria-selected="true">Home</button>
+        <button type="button" data-screen-target="suggestions" aria-selected="false">Suggestions</button>
+        <button type="button" data-screen-target="map" aria-selected="false">Pick on Map</button>
+      </nav>
+    </header>
+
+    <section class="stage" aria-label="Interactive phone design preview">
+      <div class="phone">
+        <section class="screen home-screen active" data-screen="home" aria-label="Places home screen">
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span></div>
+          <div class="home-scroll">
+            <p class="eyebrow">Wikipedia nearby</p>
+            <h2 class="home-title">Places</h2>
+            <p class="home-copy">Pick a destination and explore the stories around it.</p>
+
+            <button class="map-command" type="button" data-go="map">
+              <span class="command-icon" aria-hidden="true">+</span>
+              <span><span class="command-label">Choose on Map</span><span class="command-detail">Search or move the map</span></span>
+              <span class="chevron" aria-hidden="true">&#8250;</span>
+            </button>
+
+            <button class="suggestion-entry" type="button" data-go="suggestions">
+              <span class="entry-copy"><span class="entry-kicker">Bonus destinations</span><span class="entry-title">Explore unusual places</span><span class="entry-subtitle">Nine coordinates worth a detour</span></span>
+            </button>
+
+            <div class="section-header"><h3 class="section-title">From the assignment</h3><span class="count">4 places</span></div>
+            <div class="location-list">
+              <div class="location-row"><span class="row-icon" aria-hidden="true">&#9678;</span><span><span class="row-title">Amsterdam</span><span class="row-detail">52.3547, 4.8339</span></span><span class="row-chevron">&#8250;</span></div>
+              <div class="location-row"><span class="row-icon" aria-hidden="true">&#9678;</span><span><span class="row-title">Rotterdam</span><span class="row-detail">51.9244, 4.4777</span></span><span class="row-chevron">&#8250;</span></div>
+              <div class="location-row"><span class="row-icon" aria-hidden="true">&#9678;</span><span><span class="row-title">Utrecht</span><span class="row-detail">52.0907, 5.1214</span></span><span class="row-chevron">&#8250;</span></div>
+            </div>
+          </div>
+          <nav class="tab-bar" aria-label="App tabs">
+            <span class="tab-item"><span class="tab-glyph">&#9788;</span>Discover</span>
+            <span class="tab-item active"><span class="tab-glyph">&#9673;</span>Places</span>
+            <span class="tab-item"><span class="tab-glyph">&#9825;</span>Saved</span>
+          </nav>
+        </section>
+
+        <section class="screen retro-screen" data-screen="suggestions" aria-label="Retro suggestions screen">
+          <div class="retro-noise"></div>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span></div>
+          <div class="retro-content">
+            <div class="retro-nav"><button class="back-button" type="button" data-go="home" aria-label="Back to Places">&lt;</button><span class="level">WORLD 01 / 09</span></div>
+            <p class="retro-kicker">Select a waypoint</p>
+            <h2 class="retro-title">Odd corners of Earth</h2>
+            <p class="retro-copy">Choose a coordinate. Wikipedia will handle the field guide.</p>
+
+            <div class="mission-grid">
+              <button class="mission" type="button"><span class="mission-index">01</span><span class="pixel-marker"></span><span class="mission-name">Apple Park</span><span class="mission-coordinate">37.3349 / -122.0090</span></button>
+              <button class="mission magenta" type="button"><span class="mission-index">02</span><span class="pixel-marker"></span><span class="mission-name">Area 51</span><span class="mission-coordinate">37.2350 / -115.8111</span></button>
+              <button class="mission yellow" type="button"><span class="mission-index">03</span><span class="pixel-marker"></span><span class="mission-name">Point Nemo</span><span class="mission-coordinate">-48.8767 / -123.3933</span></button>
+              <button class="mission mint" type="button"><span class="mission-index">04</span><span class="pixel-marker"></span><span class="mission-name">Seed Vault</span><span class="mission-coordinate">78.2357 / 15.4912</span></button>
+              <button class="mission magenta" type="button"><span class="mission-index">05</span><span class="pixel-marker"></span><span class="mission-name">Rapa Nui</span><span class="mission-coordinate">-27.1170 / -109.3670</span></button>
+              <button class="mission" type="button"><span class="mission-index">06</span><span class="pixel-marker"></span><span class="mission-name">Null Island</span><span class="mission-coordinate">0.0000 / 0.0000</span></button>
+            </div>
+            <button class="random-button" type="button">Surprise me</button>
+            <div class="retro-status"><span><i class="blink-dot"></i>Wikipedia link ready</span><span>3 more waypoints</span></div>
+          </div>
+        </section>
+
+        <section class="screen map-screen" data-screen="map" aria-label="Custom map selection screen">
+          <div class="map-canvas" aria-hidden="true">
+            <div class="water"></div><div class="park"></div>
+            <div class="block b1"></div><div class="block b2"></div><div class="block b3"></div>
+            <div class="road vertical"></div><div class="road horizontal"></div><div class="road diagonal"></div>
+            <span class="road-label label-one">Tantau Avenue</span><span class="road-label label-two">Pruneridge Avenue</span>
+          </div>
+          <div class="status-bar"><span>9:41</span><span class="status-icons"><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span></div>
+          <div class="map-top">
+            <div class="map-nav"><button class="map-back" type="button" data-go="home" aria-label="Back to Places">&#8249;</button><span class="map-heading">Choose a Location</span><span style="width:44px"></span></div>
+            <span class="search-icon" aria-hidden="true">&#8981;</span>
+            <input class="map-search" aria-label="Search for a place" placeholder="Search for a place" value="Apple Park">
+          </div>
+          <div class="pin-shadow"></div><div class="center-pin" aria-label="Selected map center"><span>+</span></div>
+          <div class="map-sheet">
+            <div class="grabber"></div>
+            <span class="selection-kicker">Selected location</span>
+            <h2 class="selection-title">Apple Park</h2>
+            <p class="selection-coordinate">37.334887, -122.008996</p>
+            <button class="confirm-button" type="button">Open in Wikipedia</button>
+            <p class="map-hint">Move the map to place the pin, then confirm.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+    <p class="review-note">This is a design prototype. SwiftUI implementation begins after approval.</p>
+  </main>
+
+  <script>
+    const screens = [...document.querySelectorAll('[data-screen]')];
+    const reviewButtons = [...document.querySelectorAll('[data-screen-target]')];
+
+    function showScreen(name) {
+      screens.forEach((screen) => screen.classList.toggle('active', screen.dataset.screen === name));
+      reviewButtons.forEach((button) => button.setAttribute('aria-selected', String(button.dataset.screenTarget === name)));
+    }
+
+    reviewButtons.forEach((button) => button.addEventListener('click', () => showScreen(button.dataset.screenTarget)));
+    document.querySelectorAll('[data-go]').forEach((button) => button.addEventListener('click', () => showScreen(button.dataset.go)));
+  </script>
+</body>
+</html>

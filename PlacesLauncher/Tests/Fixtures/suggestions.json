@@ -1,0 +1,13 @@
+{
+  "suggestions": [
+    {
+      "id": "test-place",
+      "titleKey": "test.title",
+      "subtitleKey": "test.subtitle",
+      "latitude": 1.25,
+      "longitude": 2.5,
+      "symbol": "star.fill",
+      "tone": "cyan"
+    }
+  ]
+}
