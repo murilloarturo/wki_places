@@ -1,6 +1,6 @@
 import Foundation
 
-enum SuggestionTone: CaseIterable, Hashable, Sendable {
+enum SuggestionTone: String, CaseIterable, Hashable, Sendable {
     case cyan
     case magenta
     case yellow
@@ -8,13 +8,28 @@ enum SuggestionTone: CaseIterable, Hashable, Sendable {
 }
 
 struct SuggestedPlace: Identifiable, Equatable, Hashable, Sendable {
+    let id: String
     let title: String
     let subtitle: String
     let location: PlaceLocation
     let symbol: String
     let tone: SuggestionTone
 
-    var id: String { title }
+    init(
+        id: String? = nil,
+        title: String,
+        subtitle: String,
+        location: PlaceLocation,
+        symbol: String,
+        tone: SuggestionTone
+    ) {
+        self.id = id ?? title
+        self.title = title
+        self.subtitle = subtitle
+        self.location = location
+        self.symbol = symbol
+        self.tone = tone
+    }
 }
 
 enum SuggestionCatalog {

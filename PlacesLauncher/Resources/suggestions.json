@@ -1,0 +1,33 @@
+{
+  "suggestions": [
+    { "id": "apple-park", "titleKey": "suggestions.apple_park.title", "subtitleKey": "suggestions.apple_park.subtitle", "latitude": 37.33489, "longitude": -122.00899, "symbol": "apple.logo", "tone": "cyan" },
+    { "id": "area-51", "titleKey": "suggestions.area_51.title", "subtitleKey": "suggestions.area_51.subtitle", "latitude": 37.235, "longitude": -115.81111, "symbol": "sparkles", "tone": "magenta" },
+    { "id": "cern", "titleKey": "suggestions.cern.title", "subtitleKey": "suggestions.cern.subtitle", "latitude": 46.233, "longitude": 6.0558, "symbol": "atom", "tone": "yellow" },
+    { "id": "rapa-nui", "titleKey": "suggestions.rapa_nui.title", "subtitleKey": "suggestions.rapa_nui.subtitle", "latitude": -27.11272, "longitude": -109.34969, "symbol": "face.smiling.inverse", "tone": "mint" },
+    { "id": "svalbard", "titleKey": "suggestions.svalbard.title", "subtitleKey": "suggestions.svalbard.subtitle", "locationNameKey": "suggestions.svalbard.location_name", "latitude": 78.23583, "longitude": 15.49194, "symbol": "leaf.fill", "tone": "cyan" },
+    { "id": "point-nemo", "titleKey": "suggestions.point_nemo.title", "subtitleKey": "suggestions.point_nemo.subtitle", "latitude": -48.8763, "longitude": -123.3933, "symbol": "water.waves", "tone": "magenta" },
+    { "id": "null-island", "titleKey": "suggestions.null_island.title", "subtitleKey": "suggestions.null_island.subtitle", "latitude": 0, "longitude": 0, "symbol": "scope", "tone": "yellow" },
+    { "id": "bermuda-triangle", "titleKey": "suggestions.bermuda_triangle.title", "subtitleKey": "suggestions.bermuda_triangle.subtitle", "latitude": 25, "longitude": -71, "symbol": "triangle.fill", "tone": "mint" },
+    { "id": "darvaza", "titleKey": "suggestions.darvaza.title", "subtitleKey": "suggestions.darvaza.subtitle", "locationNameKey": "suggestions.darvaza.location_name", "latitude": 40.2525, "longitude": 58.4396, "symbol": "flame.fill", "tone": "magenta" },
+    { "id": "socotra", "titleKey": "suggestions.socotra.title", "subtitleKey": "suggestions.socotra.subtitle", "latitude": 12.51, "longitude": 53.92, "symbol": "tree.fill", "tone": "cyan" },
+    { "id": "salar-de-uyuni", "titleKey": "suggestions.salar_de_uyuni.title", "subtitleKey": "suggestions.salar_de_uyuni.subtitle", "latitude": -20.33333, "longitude": -67.7, "symbol": "hexagon.fill", "tone": "yellow" },
+    { "id": "paris-catacombs", "titleKey": "suggestions.paris_catacombs.title", "subtitleKey": "suggestions.paris_catacombs.subtitle", "latitude": 48.83389, "longitude": 2.33222, "symbol": "skull.fill", "tone": "magenta" },
+    { "id": "hashima", "titleKey": "suggestions.hashima.title", "subtitleKey": "suggestions.hashima.subtitle", "latitude": 32.62778, "longitude": 129.73833, "symbol": "building.2.fill", "tone": "mint" },
+    { "id": "antelope-canyon", "titleKey": "suggestions.antelope_canyon.title", "subtitleKey": "suggestions.antelope_canyon.subtitle", "latitude": 36.86196, "longitude": -111.37434, "symbol": "camera.aperture", "tone": "cyan" },
+    { "id": "fly-geyser", "titleKey": "suggestions.fly_geyser.title", "subtitleKey": "suggestions.fly_geyser.subtitle", "latitude": 40.85944, "longitude": -119.33194, "symbol": "drop.fill", "tone": "magenta" },
+    { "id": "crooked-forest", "titleKey": "suggestions.crooked_forest.title", "subtitleKey": "suggestions.crooked_forest.subtitle", "latitude": 53.21389, "longitude": 14.475, "symbol": "tree.fill", "tone": "mint" },
+    { "id": "lake-hillier", "titleKey": "suggestions.lake_hillier.title", "subtitleKey": "suggestions.lake_hillier.subtitle", "latitude": -34.09583, "longitude": 123.20278, "symbol": "water.waves", "tone": "magenta" },
+    { "id": "nazca-lines", "titleKey": "suggestions.nazca_lines.title", "subtitleKey": "suggestions.nazca_lines.subtitle", "latitude": -14.6975, "longitude": -75.135, "symbol": "scribble.variable", "tone": "yellow" },
+    { "id": "great-blue-hole", "titleKey": "suggestions.great_blue_hole.title", "subtitleKey": "suggestions.great_blue_hole.subtitle", "latitude": 17.31528, "longitude": -87.53444, "symbol": "circle.dashed", "tone": "cyan" },
+    { "id": "pripyat", "titleKey": "suggestions.pripyat.title", "subtitleKey": "suggestions.pripyat.subtitle", "latitude": 51.40472, "longitude": 30.05694, "symbol": "exclamationmark.triangle.fill", "tone": "yellow" },
+    { "id": "aogashima", "titleKey": "suggestions.aogashima.title", "subtitleKey": "suggestions.aogashima.subtitle", "latitude": 32.457, "longitude": 139.767, "symbol": "mountain.2.fill", "tone": "mint" },
+    { "id": "giants-causeway", "titleKey": "suggestions.giants_causeway.title", "subtitleKey": "suggestions.giants_causeway.subtitle", "latitude": 55.24083, "longitude": -6.51167, "symbol": "square.3.layers.3d", "tone": "cyan" },
+    { "id": "pamukkale", "titleKey": "suggestions.pamukkale.title", "subtitleKey": "suggestions.pamukkale.subtitle", "latitude": 37.92389, "longitude": 29.12333, "symbol": "cloud.fill", "tone": "mint" },
+    { "id": "lencois-maranhenses", "titleKey": "suggestions.lencois_maranhenses.title", "subtitleKey": "suggestions.lencois_maranhenses.subtitle", "latitude": -2.48333, "longitude": -43.13333, "symbol": "wind", "tone": "yellow" },
+    { "id": "waitomo", "titleKey": "suggestions.waitomo.title", "subtitleKey": "suggestions.waitomo.subtitle", "latitude": -38.2608, "longitude": 175.1036, "symbol": "sparkle", "tone": "cyan" },
+    { "id": "thors-well", "titleKey": "suggestions.thors_well.title", "subtitleKey": "suggestions.thors_well.subtitle", "latitude": 44.27843, "longitude": -124.11351, "symbol": "hurricane", "tone": "magenta" },
+    { "id": "maunsell-forts", "titleKey": "suggestions.maunsell_forts.title", "subtitleKey": "suggestions.maunsell_forts.subtitle", "latitude": 51.89519, "longitude": 1.48057, "symbol": "shield.lefthalf.filled", "tone": "yellow" },
+    { "id": "mount-roraima", "titleKey": "suggestions.mount_roraima.title", "subtitleKey": "suggestions.mount_roraima.subtitle", "latitude": 5.14333, "longitude": -60.7625, "symbol": "mountain.2.fill", "tone": "mint" },
+    { "id": "zhangye-danxia", "titleKey": "suggestions.zhangye_danxia.title", "subtitleKey": "suggestions.zhangye_danxia.subtitle", "latitude": 38.91944, "longitude": 100.13333, "symbol": "paintpalette.fill", "tone": "magenta" }
+  ]
+}
