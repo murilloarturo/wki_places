@@ -34,6 +34,7 @@ The app uses feature-based MVVM with a protocol-oriented use-case boundary:
 - `@MainActor` view models use the iOS 17 `@Observable` macro and depend only on use-case protocols.
 - Concrete use cases own HTTP and MapKit service references.
 - Codable DTOs and explicit mappers keep transport fields out of domain models.
+- `LoadSuggestionsUseCase` depends on `SuggestionCatalogProviding`, with the current implementation reading bundled JSON.
 - `AppContainer` assembles dependencies without global singletons.
 
 ## Localization
@@ -62,7 +63,7 @@ The UI suite includes an end-to-end Wikipedia handoff test. It accepts the iOS e
 - Home fetches `locations.json` on every screen entry with Swift Concurrency and handles animated loading, success, empty, failure, and retry states.
 - Location names are optional. Unnamed feed entries display as `Unnamed location` with their coordinates.
 - A location opens `wikipedia://places?lat=...&lon=...`.
-- Suggestions switches the entire screen to a retro game-map treatment and includes a deterministic-testable Surprise Me action.
+- Suggestions are loaded from `Resources/suggestions.json`, switch the entire screen to a retro game-map treatment, and include a deterministic-testable Surprise Me action.
 - Choose on Map supports Apple Maps search, map panning with a fixed center pin, confirmation, and visible errors.
 
 ## Structure
@@ -88,6 +89,8 @@ PlacesLauncher/
 ## Configuration
 
 No secrets or environment variables are required. The public assignment feed URL and its `GET` method are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses `URLSession.shared` with `.useProtocolCachePolicy`, so standard HTTP response headers control caching and revalidation.
+
+The suggestions catalog is a bundled JSON asset decoded by `LocalSuggestionCatalogProvider`. The UI depends on `LoadSuggestionsUseCase`, so moving the catalog to a backend or remote configuration only requires supplying another `SuggestionCatalogProviding` implementation in `AppContainer`.
 
 ## License
 
