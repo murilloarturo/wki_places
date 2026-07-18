@@ -11,9 +11,9 @@ struct PlacesHomeView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 26) {
                     header
+                    locationsSection
                     chooseOnMapLink
                     suggestionsLink
-                    locationsSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 32)
@@ -233,4 +233,3 @@ struct PlacesHomeView: View {
         }
     }
 }
-
