@@ -1,6 +1,6 @@
 # Places Launcher Design Direction
 
-Status: Awaiting Arturo's approval before SwiftUI implementation.
+Status: Approved by Arturo for SwiftUI implementation.
 
 Interactive preview: [design-preview.html](./design-preview.html)
 
@@ -85,7 +85,7 @@ Suggestions is visible from the main screen. It is not unlocked by a code. Openi
 
 ## Approval Gate
 
-SwiftUI implementation starts only after Arturo approves:
+Approved. SwiftUI implementation follows these decisions:
 
 - The everyday Home direction.
 - The full-screen retro Suggestions transformation.
