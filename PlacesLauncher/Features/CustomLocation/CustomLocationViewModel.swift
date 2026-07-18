@@ -1,14 +1,6 @@
 import CoreLocation
 import Foundation
 
-enum CustomLocationConfirmationError: LocalizedError, Equatable {
-    case noSelection
-
-    var errorDescription: String? {
-        L10n.Custom.Error.noSelection
-    }
-}
-
 @MainActor
 final class CustomLocationViewModel: ObservableObject {
     @Published var query = ""
