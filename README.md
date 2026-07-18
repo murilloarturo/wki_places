@@ -11,7 +11,7 @@ Implementation branch: `codex/places-launcher-app`. This branch is intentionally
 - macOS with Xcode 26.4 or a compatible Xcode release
 - iOS 17+ simulator or device
 - XcodeGen 2.45+
-- The modified Wikipedia iOS app installed with support for `wikipedia://places?lat=<latitude>&lon=<longitude>`
+- The locally signed modified Wikipedia iOS app installed with support for `wikipedia://places?lat=<latitude>&lon=<longitude>`
 
 ## Generate and Run
 
@@ -30,6 +30,8 @@ cd PlacesLauncher
 xcodebuild -project PlacesLauncher.xcodeproj -scheme PlacesLauncher -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 xcodebuild -project PlacesLauncher.xcodeproj -scheme PlacesLauncher -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
 ```
+
+The UI suite includes an end-to-end Wikipedia handoff test. It accepts the iOS external-app confirmation, skips first-run Wikipedia onboarding when present, and verifies the Places tab. The test skips when the assignment Wikipedia build is not installed on the selected simulator.
 
 ## Behavior
 
@@ -57,4 +59,3 @@ No secrets or environment variables are required. The public assignment feed URL
 ## License
 
 No license has been selected for this assignment repository.
-
