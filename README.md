@@ -17,13 +17,14 @@ Implementation branch: `codex/places-launcher-app`. This branch is intentionally
 ## Generate and Run
 
 ```sh
+brew install xcodegen swiftgen
 cd PlacesLauncher
 ./scripts/generate-localizations.sh
-/opt/homebrew/bin/xcodegen generate
+xcodegen generate
 open PlacesLauncher.xcodeproj
 ```
 
-Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. The generated Xcode project is ignored because `project.yml` is the source of truth. Xcode also runs the SwiftGen script before builds when the source strings change.
+Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. The generated Xcode project is ignored because `project.yml` is the source of truth. Xcode also runs the SwiftGen script before builds when the source strings change. The build script resolves SwiftGen from the shell or the standard Apple Silicon and Intel Homebrew locations.
 
 ## Architecture
 
