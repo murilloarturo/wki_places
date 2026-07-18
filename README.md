@@ -27,6 +27,18 @@ Install the tools used by Places:
 brew install xcodegen swiftgen
 ```
 
+## XcodeGen
+
+The Places Xcode project is generated with XcodeGen and is not committed to the repository. Generate `PlacesLauncher.xcodeproj` locally before opening, building, or testing the app:
+
+```sh
+cd PlacesLauncher
+xcodegen generate
+open PlacesLauncher.xcodeproj
+```
+
+[`PlacesLauncher/project.yml`](PlacesLauncher/project.yml) is the source of truth. Run `xcodegen generate` again after changing project settings, targets, dependencies, or source layout.
+
 ## Run Both Apps
 
 Install and launch the modified Wikipedia app first. Both apps must run on the same simulator or device.
