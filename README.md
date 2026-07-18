@@ -27,13 +27,13 @@ Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. Th
 
 ## Architecture
 
-The app uses feature-based MVVM with lightweight protocol-oriented services:
+The app uses feature-based MVVM with a protocol-oriented use-case boundary:
 
 - SwiftUI views own presentation and navigation.
-- `@MainActor` observable view models own screen state and async actions.
-- Codable domain models represent feed and selected locations.
-- Protocol-backed feed, map-search, and Wikipedia-launching services keep platform and network work testable.
-- Dependencies are injected at feature boundaries instead of accessed through global singletons.
+- `@MainActor` observable view models own screen state and depend only on use-case protocols.
+- Concrete use cases own HTTP and MapKit service references.
+- Codable DTOs and explicit mappers keep transport fields out of domain models.
+- `AppContainer` assembles dependencies without global singletons.
 
 ## Localization
 
@@ -62,7 +62,7 @@ The UI suite includes an end-to-end Wikipedia handoff test. It accepts the iOS e
 - Location names are optional. Unnamed feed entries display as `Unnamed location` with their coordinates.
 - A location opens `wikipedia://places?lat=...&lon=...`.
 - Suggestions switches the entire screen to a retro game-map treatment and includes a deterministic-testable Surprise Me action.
-- Choose on Map supports Apple Maps search, map panning with a fixed center pin, confirmation, cancellation, and visible errors.
+- Choose on Map supports Apple Maps search, map panning with a fixed center pin, confirmation, and visible errors.
 
 ## Structure
 
@@ -70,6 +70,11 @@ The UI suite includes an end-to-end Wikipedia handoff test. It accepts the iOS e
 PlacesLauncher/
 ├── App/
 ├── Core/
+│   ├── DTOs/
+│   ├── Mappers/
+│   ├── Models/
+│   ├── Services/
+│   └── UseCases/
 ├── Features/
 ├── Generated/
 ├── Resources/
@@ -81,7 +86,7 @@ PlacesLauncher/
 
 ## Configuration
 
-No secrets or environment variables are required. The public assignment feed URL and its 30-minute cache lifetime are defined by `LocationFeedEndpoint.assignment`. Home asks the generic `JSONHTTPClient` for the feed on every entry; the client returns a valid cached response or reloads it after expiry.
+No secrets or environment variables are required. The public assignment feed URL and its 30-minute cache lifetime are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry; its concrete implementation asks the generic `JSONHTTPClient` for a valid cached response or reloads it after expiry.
 
 ## License
 

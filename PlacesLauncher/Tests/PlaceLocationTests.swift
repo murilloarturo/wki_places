@@ -3,7 +3,7 @@ import XCTest
 @testable import PlacesLauncher
 
 final class PlaceLocationTests: XCTestCase {
-    func testDecodesFeedRootOptionalNameAndLongCodingKey() throws {
+    func testMappedFeedLocationPreservesOptionalNameAndLongitude() throws {
         let data = Data(
             """
             {
@@ -15,13 +15,14 @@ final class PlaceLocationTests: XCTestCase {
             """.utf8
         )
 
-        let response = try JSONDecoder().decode(LocationFeedResponse.self, from: data)
+        let dto = try JSONDecoder().decode(LocationFeedDTO.self, from: data)
+        let locations = LocationFeedMapper().map(dto)
 
-        XCTAssertEqual(response.locations.count, 2)
-        XCTAssertEqual(response.locations[0].name, "Amsterdam")
-        XCTAssertEqual(response.locations[0].longitude, 4.8339215, accuracy: 0.0000001)
-        XCTAssertNil(response.locations[1].name)
-        XCTAssertEqual(response.locations[1].displayName, "Unnamed location")
+        XCTAssertEqual(locations.count, 2)
+        XCTAssertEqual(locations[0].name, "Amsterdam")
+        XCTAssertEqual(locations[0].longitude, 4.8339215, accuracy: 0.0000001)
+        XCTAssertNil(locations[1].name)
+        XCTAssertEqual(locations[1].displayName, "Unnamed location")
     }
 
     func testBlankNameUsesUnnamedFallback() {
@@ -29,4 +30,3 @@ final class PlaceLocationTests: XCTestCase {
         XCTAssertEqual(location.displayName, "Unnamed location")
     }
 }
-

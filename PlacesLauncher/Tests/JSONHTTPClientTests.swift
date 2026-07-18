@@ -11,12 +11,12 @@ final class JSONHTTPClientTests: XCTestCase {
         let client = JSONHTTPClient(dataLoader: loader)
 
         let response = try await client.fetch(
-            LocationFeedResponse.self,
+            LocationFeedDTO.self,
             from: LocationFeedEndpoint.assignment
         )
 
         XCTAssertEqual(response.locations, [
-            PlaceLocation(name: "Copenhagen", latitude: 55.6713442, longitude: 12.523785)
+            LocationDTO(name: "Copenhagen", latitude: 55.6713442, longitude: 12.523785)
         ])
         XCTAssertEqual(loader.requests.map(\.url), [LocationFeedEndpoint.assignment.url])
     }
@@ -30,17 +30,17 @@ final class JSONHTTPClientTests: XCTestCase {
         let client = JSONHTTPClient(dataLoader: loader, now: { clock.now })
 
         let first = try await client.fetch(
-            LocationFeedResponse.self,
+            LocationFeedDTO.self,
             from: LocationFeedEndpoint.assignment
         )
         clock.advance(by: 29 * 60)
         let cached = try await client.fetch(
-            LocationFeedResponse.self,
+            LocationFeedDTO.self,
             from: LocationFeedEndpoint.assignment
         )
         clock.advance(by: 61)
         let fresh = try await client.fetch(
-            LocationFeedResponse.self,
+            LocationFeedDTO.self,
             from: LocationFeedEndpoint.assignment
         )
 
@@ -58,7 +58,7 @@ final class JSONHTTPClientTests: XCTestCase {
 
         do {
             _ = try await client.fetch(
-                LocationFeedResponse.self,
+                LocationFeedDTO.self,
                 from: LocationFeedEndpoint.assignment
             )
             XCTFail("Expected an HTTP status error")
@@ -75,7 +75,7 @@ final class JSONHTTPClientTests: XCTestCase {
 
         do {
             _ = try await client.fetch(
-                LocationFeedResponse.self,
+                LocationFeedDTO.self,
                 from: LocationFeedEndpoint.assignment
             )
             XCTFail("Expected a decoding error")

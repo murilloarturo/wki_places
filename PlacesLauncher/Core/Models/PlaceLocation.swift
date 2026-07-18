@@ -1,20 +1,10 @@
 import CoreLocation
 import Foundation
 
-struct LocationFeedResponse: Codable, Equatable, Sendable {
-    let locations: [PlaceLocation]
-}
-
-struct PlaceLocation: Codable, Equatable, Hashable, Identifiable, Sendable {
+struct PlaceLocation: Equatable, Hashable, Identifiable, Sendable {
     let name: String?
     let latitude: Double
     let longitude: Double
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case latitude = "lat"
-        case longitude = "long"
-    }
 
     var id: String {
         "\(latitude),\(longitude)"

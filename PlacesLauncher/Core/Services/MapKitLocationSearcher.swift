@@ -1,32 +1,8 @@
-import CoreLocation
 import Foundation
 import MapKit
 
-struct PlaceSearchResult: Sendable {
-    let title: String
-    let subtitle: String?
-    let coordinate: CLLocationCoordinate2D
-}
-
 protocol LocationSearching {
     func search(query: String) async throws -> PlaceSearchResult
-}
-
-enum LocationSearchError: LocalizedError, Equatable {
-    case emptyQuery
-    case noResults
-    case unavailable
-
-    var errorDescription: String? {
-        switch self {
-        case .emptyQuery:
-            return L10n.Search.Error.empty
-        case .noResults:
-            return L10n.Search.Error.noResults
-        case .unavailable:
-            return L10n.Search.Error.unavailable
-        }
-    }
 }
 
 struct MapKitLocationSearcher: LocationSearching {

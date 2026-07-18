@@ -3,10 +3,13 @@ import SwiftUI
 @main
 struct PlacesLauncherApp: App {
     @StateObject private var feedViewModel: LocationFeedViewModel
+    private let container: AppContainer
 
     init() {
+        let container = AppContainer()
+        self.container = container
         _feedViewModel = StateObject(
-            wrappedValue: LocationFeedViewModel(client: JSONHTTPClient())
+            wrappedValue: container.makeLocationFeedViewModel()
         )
     }
 
@@ -14,7 +17,8 @@ struct PlacesLauncherApp: App {
         WindowGroup {
             PlacesHomeView(
                 viewModel: feedViewModel,
-                wikipediaOpener: WikipediaLauncher()
+                wikipediaOpener: container.wikipediaOpener,
+                customLocationViewModelFactory: container.makeCustomLocationViewModel
             )
             .tint(AppPalette.blue)
         }

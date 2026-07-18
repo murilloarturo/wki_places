@@ -7,11 +7,12 @@ final class CustomLocationViewModelTests: XCTestCase {
     func testSearchUpdatesSelectionAndConfirmation() async throws {
         let expected = CLLocationCoordinate2D(latitude: 37.33489, longitude: -122.00899)
         let viewModel = CustomLocationViewModel(
-            searcher: StubLocationSearcher(
+            searchLocationUseCase: StubSearchLocationUseCase(
                 result: .success(
                     PlaceSearchResult(title: "Apple Park", subtitle: "Cupertino", coordinate: expected)
                 )
             ),
+            confirmCustomLocationUseCase: DefaultConfirmCustomLocationUseCase(),
             initialCoordinate: nil
         )
         viewModel.query = "Apple Park"
@@ -29,7 +30,10 @@ final class CustomLocationViewModelTests: XCTestCase {
     func testSearchErrorIsPresentedWithoutDestroyingCurrentSelection() async {
         let initial = CLLocationCoordinate2D(latitude: 52.3676, longitude: 4.9041)
         let viewModel = CustomLocationViewModel(
-            searcher: StubLocationSearcher(result: .failure(LocationSearchError.noResults)),
+            searchLocationUseCase: StubSearchLocationUseCase(
+                result: .failure(LocationSearchError.noResults)
+            ),
+            confirmCustomLocationUseCase: DefaultConfirmCustomLocationUseCase(),
             initialCoordinate: initial
         )
         viewModel.query = "Nowhere nearby"
@@ -43,7 +47,10 @@ final class CustomLocationViewModelTests: XCTestCase {
 
     func testEmptySearchProducesClearValidationError() async {
         let viewModel = CustomLocationViewModel(
-            searcher: StubLocationSearcher(result: .failure(LocationSearchError.unavailable))
+            searchLocationUseCase: StubSearchLocationUseCase(
+                result: .failure(LocationSearchError.emptyQuery)
+            ),
+            confirmCustomLocationUseCase: DefaultConfirmCustomLocationUseCase()
         )
         viewModel.query = "   "
 
@@ -54,7 +61,10 @@ final class CustomLocationViewModelTests: XCTestCase {
 
     func testMapPanCreatesDroppedPinConfirmation() throws {
         let viewModel = CustomLocationViewModel(
-            searcher: StubLocationSearcher(result: .failure(LocationSearchError.unavailable)),
+            searchLocationUseCase: StubSearchLocationUseCase(
+                result: .failure(LocationSearchError.unavailable)
+            ),
+            confirmCustomLocationUseCase: DefaultConfirmCustomLocationUseCase(),
             initialCoordinate: nil
         )
         viewModel.updateMapCenter(CLLocationCoordinate2D(latitude: -27.11272, longitude: -109.34969))
@@ -67,7 +77,10 @@ final class CustomLocationViewModelTests: XCTestCase {
 
     func testConfirmationWithoutSelectionFailsClearly() {
         let viewModel = CustomLocationViewModel(
-            searcher: StubLocationSearcher(result: .failure(LocationSearchError.unavailable)),
+            searchLocationUseCase: StubSearchLocationUseCase(
+                result: .failure(LocationSearchError.unavailable)
+            ),
+            confirmCustomLocationUseCase: DefaultConfirmCustomLocationUseCase(),
             initialCoordinate: nil
         )
 
@@ -77,11 +90,10 @@ final class CustomLocationViewModelTests: XCTestCase {
     }
 }
 
-private struct StubLocationSearcher: LocationSearching {
+private struct StubSearchLocationUseCase: SearchLocationUseCase {
     let result: Result<PlaceSearchResult, Error>
 
-    func search(query: String) async throws -> PlaceSearchResult {
+    func execute(query: String) async throws -> PlaceSearchResult {
         try result.get()
     }
 }
-

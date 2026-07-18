@@ -3,6 +3,7 @@ import SwiftUI
 struct PlacesHomeView: View {
     @ObservedObject var viewModel: LocationFeedViewModel
     let wikipediaOpener: any WikipediaOpening
+    let customLocationViewModelFactory: () -> CustomLocationViewModel
 
     @State private var alertMessage: String?
     @State private var feedTask: Task<Void, Never>?
@@ -60,7 +61,7 @@ struct PlacesHomeView: View {
     private var chooseOnMapLink: some View {
         NavigationLink {
             CustomLocationView(
-                viewModel: CustomLocationViewModel(searcher: MapKitLocationSearcher()),
+                viewModel: customLocationViewModelFactory(),
                 wikipediaOpener: wikipediaOpener
             )
         } label: {

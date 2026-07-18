@@ -10,32 +10,29 @@ final class CustomLocationViewModel: ObservableObject {
     @Published private(set) var selectedName: String?
     @Published private(set) var cameraRevision = 0
 
-    private let searcher: any LocationSearching
+    private let searchLocationUseCase: any SearchLocationUseCase
+    private let confirmCustomLocationUseCase: any ConfirmCustomLocationUseCase
 
     init(
-        searcher: any LocationSearching,
+        searchLocationUseCase: any SearchLocationUseCase,
+        confirmCustomLocationUseCase: any ConfirmCustomLocationUseCase,
         initialCoordinate: CLLocationCoordinate2D? = CLLocationCoordinate2D(
             latitude: 52.36760,
             longitude: 4.90410
         )
     ) {
-        self.searcher = searcher
+        self.searchLocationUseCase = searchLocationUseCase
+        self.confirmCustomLocationUseCase = confirmCustomLocationUseCase
         selectedCoordinate = initialCoordinate
     }
 
     func search() async {
-        let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedQuery.isEmpty else {
-            errorMessage = LocationSearchError.emptyQuery.localizedDescription
-            return
-        }
-
         isSearching = true
         errorMessage = nil
         defer { isSearching = false }
 
         do {
-            let result = try await searcher.search(query: trimmedQuery)
+            let result = try await searchLocationUseCase.execute(query: query)
             try Task.checkCancellation()
             selectedCoordinate = result.coordinate
             selectedName = result.title
@@ -62,17 +59,9 @@ final class CustomLocationViewModel: ObservableObject {
     }
 
     func confirmedLocation() throws -> PlaceLocation {
-        guard let selectedCoordinate else {
-            throw CustomLocationConfirmationError.noSelection
-        }
-        try CoordinateValidator.validate(
-            latitude: selectedCoordinate.latitude,
-            longitude: selectedCoordinate.longitude
-        )
-        return PlaceLocation(
-            name: selectedName ?? L10n.Custom.droppedPinName,
-            latitude: selectedCoordinate.latitude,
-            longitude: selectedCoordinate.longitude
+        try confirmCustomLocationUseCase.execute(
+            name: selectedName,
+            coordinate: selectedCoordinate
         )
     }
 
