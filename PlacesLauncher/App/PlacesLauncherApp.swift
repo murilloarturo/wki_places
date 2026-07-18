@@ -1,20 +1,20 @@
+import FactoryKit
 import SwiftUI
 
 @main
 struct PlacesLauncherApp: App {
     @State private var feedViewModel: LocationFeedViewModel
     @State private var suggestionsViewModel: SuggestionsViewModel
-    private let container: AppContainer
+    private let wikipediaOpener: any WikipediaOpening
 
     init() {
-        let container = AppContainer()
-        self.container = container
         _feedViewModel = State(
-            initialValue: container.makeLocationFeedViewModel()
+            initialValue: LocationFeedViewModel.make()
         )
         _suggestionsViewModel = State(
-            initialValue: container.makeSuggestionsViewModel()
+            initialValue: SuggestionsViewModel.make()
         )
+        wikipediaOpener = Container.shared.wikipediaOpener()
     }
 
     var body: some Scene {
@@ -22,8 +22,7 @@ struct PlacesLauncherApp: App {
             PlacesHomeView(
                 viewModel: feedViewModel,
                 suggestionsViewModel: suggestionsViewModel,
-                wikipediaOpener: container.wikipediaOpener,
-                customLocationViewModelFactory: container.makeCustomLocationViewModel
+                wikipediaOpener: wikipediaOpener
             )
             .tint(AppPalette.blue)
         }

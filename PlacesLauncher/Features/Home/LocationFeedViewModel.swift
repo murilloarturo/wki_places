@@ -1,3 +1,4 @@
+import FactoryKit
 import Foundation
 import Observation
 
@@ -14,6 +15,12 @@ final class LocationFeedViewModel {
     private(set) var state: LocationFeedState = .idle
 
     private let fetchLocationsUseCase: any FetchLocationsUseCase
+
+    static func make() -> LocationFeedViewModel {
+        LocationFeedViewModel(
+            fetchLocationsUseCase: Container.shared.fetchLocationsUseCase()
+        )
+    }
 
     init(fetchLocationsUseCase: any FetchLocationsUseCase) {
         self.fetchLocationsUseCase = fetchLocationsUseCase

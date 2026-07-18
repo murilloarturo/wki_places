@@ -4,7 +4,6 @@ struct PlacesHomeView: View {
     let viewModel: LocationFeedViewModel
     let suggestionsViewModel: SuggestionsViewModel
     let wikipediaOpener: any WikipediaOpening
-    let customLocationViewModelFactory: () -> CustomLocationViewModel
 
     @State private var alertMessage: String?
     @State private var feedTask: Task<Void, Never>?
@@ -65,7 +64,7 @@ struct PlacesHomeView: View {
     private var chooseOnMapLink: some View {
         NavigationLink {
             CustomLocationView(
-                viewModel: customLocationViewModelFactory(),
+                viewModel: CustomLocationViewModel.make(),
                 wikipediaOpener: wikipediaOpener
             )
         } label: {

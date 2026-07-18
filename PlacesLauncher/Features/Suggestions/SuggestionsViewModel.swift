@@ -1,3 +1,4 @@
+import FactoryKit
 import Observation
 
 enum SuggestionsState: Equatable {
@@ -13,6 +14,12 @@ final class SuggestionsViewModel {
     private(set) var state: SuggestionsState = .idle
 
     private let loadSuggestionsUseCase: any LoadSuggestionsUseCase
+
+    static func make() -> SuggestionsViewModel {
+        SuggestionsViewModel(
+            loadSuggestionsUseCase: Container.shared.loadSuggestionsUseCase()
+        )
+    }
 
     init(loadSuggestionsUseCase: any LoadSuggestionsUseCase) {
         self.loadSuggestionsUseCase = loadSuggestionsUseCase

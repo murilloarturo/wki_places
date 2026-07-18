@@ -1,4 +1,5 @@
 import CoreLocation
+import FactoryKit
 import Foundation
 import Observation
 
@@ -14,6 +15,14 @@ final class CustomLocationViewModel {
 
     private let searchLocationUseCase: any SearchLocationUseCase
     private let confirmCustomLocationUseCase: any ConfirmCustomLocationUseCase
+
+    static func make() -> CustomLocationViewModel {
+        CustomLocationViewModel(
+            searchLocationUseCase: Container.shared.searchLocationUseCase(),
+            confirmCustomLocationUseCase:
+                Container.shared.confirmCustomLocationUseCase()
+        )
+    }
 
     init(
         searchLocationUseCase: any SearchLocationUseCase,
