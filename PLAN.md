@@ -2,126 +2,260 @@
 
 ## Goal
 
-Create a public GitHub repository containing a local copy of the Wikipedia iOS app plus a SwiftUI test app. The Wikipedia app will support a new deep link that opens the Places tab at coordinates supplied by another app instead of using the current device location.
+Create a public GitHub repository containing a local copy of the Wikipedia iOS app plus a SwiftUI Places launcher app. The launcher will open Wikipedia through a new deep link so Wikipedia starts directly on the Places tab at caller-supplied coordinates instead of the current device location.
 
-## Repository Strategy
+Public repo:
 
-- Use this repository as the single delivery artifact: `murilloarturo/wki_places`.
-- Import the upstream Wikipedia iOS source into this repo instead of using a fork.
-- Preserve upstream attribution and license files from `wikimedia/wikipedia-ios`.
-- Keep assignment-specific notes in this repo so reviewers can clone one project and follow one README.
-- Use git locally for all work and push meaningful commits to GitHub.
+```text
+https://github.com/murilloarturo/wki_places
+```
 
-## Proposed Structure
+## Operating Rules
+
+- Keep the assignment in one repository.
+- Work locally with git and push branches to GitHub.
+- Separate major work into deliverables and isolated worktrees.
+- Do not merge feature branches into `main` without Arturo's explicit approval.
+- When in doubt, pause and ask Arturo before choosing a risky direction.
+- After the Wikipedia and Places launcher streams are ready, stop and ask Arturo to test both apps before any merge.
+
+## Proposed Repository Layout
 
 ```text
 wki_places/
 ├── PLAN.md
 ├── README.md
 ├── wikipedia-ios/
-│   └── upstream Wikipedia iOS app source
+│   └── local copy of upstream Wikipedia iOS app
 └── PlacesLauncher/
-    └── SwiftUI test app
+    └── SwiftUI launcher/test app
 ```
 
-The exact structure may be adjusted after inspecting the Wikipedia project files. If adding the launcher as a second target inside the Wikipedia Xcode project is simpler for reviewer testing, prefer that over a separate Xcode project.
+The exact Xcode layout may change after inspecting the Wikipedia project. If adding the launcher as a second app target inside the same workspace is cleaner for reviewers, prefer that over forcing a separate project.
 
-## Deep Link Design
+## Deliverable 1: Product and UI Design
 
-Use a URL format like:
+Branch:
+
+```text
+codex/design-direction
+```
+
+Worktree:
+
+```text
+/Users/arturo/Developer/wki_places_design
+```
+
+Purpose:
+
+- Define the Places launcher experience before implementation.
+- Keep the app simple enough for an assignment but polished enough to feel intentional.
+- Create a playful screen concept that still demonstrates the core requirement clearly.
+
+Design scope:
+
+- Main SwiftUI screen layout.
+- Location list treatment.
+- Custom coordinate entry flow.
+- Loading, empty, error, and validation states.
+- Accessibility labels/hints strategy.
+- Small fun details and easter eggs that do not distract from the assignment.
+
+Possible playful touches:
+
+- A curated "fun jumps" section with locations such as Area 51, Null Island, CERN, the Bermuda Triangle, or other memorable coordinates.
+- A Konami-code-style hidden action that reveals bonus locations or random "adventure" suggestions.
+- A "surprise me" location button.
+- Copy that feels light and clever while still being professional.
+
+Output:
+
+- Design notes in `docs/design.md`.
+- Screens/flow description in the README or a linked doc.
+- Optional lightweight wireframe asset if helpful.
+
+Acceptance:
+
+- Arturo approves the design direction before implementation starts.
+
+## Deliverable 2: Wikipedia Deep Link Support
+
+Branch:
+
+```text
+codex/wikipedia-places-deeplink
+```
+
+Worktree:
+
+```text
+/Users/arturo/Developer/wki_places_wikipedia
+```
+
+Purpose:
+
+- Import and modify the Wikipedia iOS app source.
+- Add a new deep link that opens the Places tab at supplied coordinates.
+- Keep changes focused and compatible with normal Wikipedia behavior.
+
+Deep link proposal:
 
 ```text
 wikipedia://places?lat=52.3547498&lon=4.8339215
 ```
 
-Implementation requirements:
+Also accept:
 
-- Parse `lat` and `lon`/`long` query parameters.
-- Validate that latitude is between `-90...90` and longitude is between `-180...180`.
-- Route launch/open events to the Places tab.
-- Pass the coordinate into the Places screen as an override location.
-- Preserve existing behavior when the deep link is absent or invalid.
+```text
+wikipedia://places?lat=52.3547498&long=4.8339215
+```
 
-## Work Phases
+Phases:
 
-### 1. Import and Baseline
+1. Import the upstream Wikipedia iOS source into `wikipedia-ios/`.
+2. Inspect the project structure, build setup, URL routing, tab routing, and Places location flow.
+3. Document findings in `docs/wikipedia-analysis.md`.
+4. Add a focused parser/model for Places coordinate links.
+5. Route valid links to the Places tab.
+6. Inject the supplied coordinate into Places as an override.
+7. Preserve existing current-location behavior for normal launches.
+8. Add unit tests around URL parsing and invalid-coordinate handling.
+9. Manually test with Simulator using `xcrun simctl openurl`.
 
-- Download or clone `https://github.com/wikimedia/wikipedia-ios`.
-- Copy the source into this repository.
-- Run the upstream setup instructions from the repo root, expected to be `./scripts/setup`.
-- Open/build the Wikipedia app in Xcode before making changes.
-- Commit the clean upstream import separately from assignment changes.
+Validation:
 
-### 2. Inspect Existing Deep Linking and Places Flow
+- Wikipedia builds locally.
+- Existing app launch behavior still works.
+- A valid Places coordinate link opens the Places tab.
+- Invalid links are ignored safely or handled predictably.
+- Tests for the new parser pass.
 
-- Locate URL scheme registration and app delegate/scene delegate routing.
-- Identify the current tab selection mechanism.
-- Find the Places tab entry point and how it requests current location.
-- Identify the smallest extension point for injecting a coordinate.
+Output:
 
-### 3. Implement Wikipedia Deep Link Support
+- Branch pushed to GitHub.
+- Summary of modified files.
+- Manual test instructions for Arturo.
 
-- Add a focused parser/model for the new Places coordinate deep link.
-- Add tests for accepted, rejected, and edge-case URLs.
-- Update app routing so the URL opens the Places tab.
-- Add a coordinate override path to Places without breaking normal location behavior.
-- Manually test with Simulator using `xcrun simctl openurl`.
+## Deliverable 3: SwiftUI Places Launcher App
 
-### 4. Build the SwiftUI Places Launcher
+Branch:
 
-- Create a simple SwiftUI app in the same repository.
-- Fetch locations from:
+```text
+codex/places-launcher-app
+```
+
+Worktree:
+
+```text
+/Users/arturo/Developer/wki_places_launcher
+```
+
+Purpose:
+
+- Build the assignment's SwiftUI test app.
+- Fetch remote locations.
+- Open Wikipedia using the new Places deep link.
+- Include custom coordinate entry.
+- Include the approved design personality and easter eggs.
+
+Required feed:
 
 ```text
 https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json
 ```
 
-- Decode the JSON with `Codable`.
-- Use Swift Concurrency with `async/await` for networking.
-- Display a list of fetched locations.
-- Handle unnamed locations by displaying formatted coordinates.
-- On tap, open the Wikipedia deep link.
-- Add fields for a custom latitude and longitude.
-- Validate custom input before opening Wikipedia.
-- Include basic loading, error, and retry states.
-- Add accessibility labels/hints for rows, input fields, and the open action.
+Phases:
 
-### 5. Tests
+1. Create the launcher app structure.
+2. Add `Codable` models for the locations feed.
+3. Fetch locations with Swift Concurrency using `async/await`.
+4. Display loading, success, error, and retry states.
+5. Show fetched locations in an accessible list.
+6. Handle unnamed locations with coordinate-based display names.
+7. Add custom latitude/longitude entry and validation.
+8. Generate the Wikipedia Places deep link.
+9. Open Wikipedia through `UIApplication.open`.
+10. Add approved easter eggs and fun suggested locations.
+11. Add unit tests for decoding, validation, and URL generation.
 
-- Unit test Wikipedia deep-link parsing.
-- Unit test launcher JSON decoding, including unnamed locations.
-- Unit test launcher URL generation.
-- Unit test custom coordinate validation.
-- Run relevant Xcode test targets before final delivery.
+Validation:
 
-### 6. README and Reviewer Notes
+- Launcher builds locally.
+- Remote feed loads.
+- Tapping a fetched location opens Wikipedia.
+- Custom coordinates open Wikipedia.
+- Invalid custom input is blocked with a clear UI state.
+- Accessibility labels/hints are present for key controls.
+- Unit tests pass.
 
-- Explain the assignment and repository layout.
-- Document setup prerequisites.
-- Explain how to build/run the modified Wikipedia app.
-- Explain how to build/run the SwiftUI launcher app.
-- Document the deep link format with examples.
-- Include test commands or Xcode test instructions.
-- Mention Swift Concurrency and Accessibility choices.
-- Add troubleshooting notes for URL scheme conflicts or simulator setup.
+Output:
 
-## Validation Checklist
+- Branch pushed to GitHub.
+- Summary of app structure and test coverage.
+- Manual test instructions for Arturo.
+
+## Deliverable 4: Integration, README, and Test Gate
+
+Branch:
+
+```text
+codex/integration-readme
+```
+
+Worktree:
+
+```text
+/Users/arturo/Developer/wki_places_integration
+```
+
+Purpose:
+
+- Bring the completed Wikipedia and launcher branches together only after both are ready.
+- Prepare reviewer-facing documentation.
+- Stop before merging into `main`.
+
+Phases:
+
+1. Create an integration branch from latest `main`.
+2. Bring in the completed Wikipedia and launcher work for integration testing.
+3. Resolve conflicts if any.
+4. Write or update `README.md`.
+5. Add final setup, run, test, and troubleshooting instructions.
+6. Confirm license/attribution notes for the copied Wikipedia source.
+7. Push the integration branch.
+8. Ask Arturo to test both apps.
+
+README must include:
+
+- Assignment summary.
+- Repository layout.
+- Xcode and setup prerequisites.
+- How to run the modified Wikipedia app.
+- How to run the SwiftUI Places launcher app.
+- The supported deep link format.
+- How to run tests.
+- Notes on Swift Concurrency.
+- Notes on Accessibility.
+- Easter egg notes only if they help testing, otherwise keep them discoverable.
+
+Merge rule:
+
+- Do not merge `codex/integration-readme` into `main`.
+- Arturo tests first.
+- Arturo explicitly approves the merge.
+- Only then perform the merge if Arturo asks for it.
+
+## Final Validation Checklist
 
 - Wikipedia app builds locally.
-- Launcher app builds locally.
-- Fetched locations appear in the launcher list.
-- Tapping each location opens Wikipedia to Places at that coordinate.
+- Places launcher app builds locally.
+- Fetched locations appear in the launcher.
+- Tapping a fetched location opens Wikipedia to Places at that coordinate.
 - Custom coordinates open Wikipedia to Places at that coordinate.
 - Invalid custom coordinates are rejected in the launcher.
 - Normal Wikipedia Places behavior still works when opened without coordinates.
-- Unit tests pass.
+- Unit tests pass where practical.
 - README is complete enough for a reviewer to clone and run the assignment.
-
-## Delivery
-
-- Push the final code to the public repository.
-- Share the public GitHub link:
-
-```text
-https://github.com/murilloarturo/wki_places
-```
+- All final branches are pushed to GitHub.
+- Arturo has tested both apps before any merge to `main`.
