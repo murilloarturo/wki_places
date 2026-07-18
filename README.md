@@ -32,9 +32,9 @@ The app uses feature-based MVVM with a protocol-oriented use-case boundary:
 
 - SwiftUI views own presentation and navigation.
 - `@MainActor` view models use the iOS 17 `@Observable` macro and depend only on use-case protocols.
-- Concrete use cases own HTTP and MapKit service references.
+- `DefaultLocationsProvider` owns remote feed retrieval and bundled suggestion catalog loading.
+- Location use cases depend on `LocationsProviding` and map provider DTOs into domain models.
 - Codable DTOs and explicit mappers keep transport fields out of domain models.
-- `LoadSuggestionsUseCase` depends on `SuggestionCatalogProviding`, with the current implementation reading bundled JSON.
 - FactoryKit registers services and use cases in `Dependencies.swift`.
 - Each view model exposes a static production `make()` method while retaining an injectable initializer for tests.
 
@@ -92,7 +92,7 @@ PlacesLauncher/
 
 No secrets or environment variables are required. The public assignment feed URL and its `GET` method are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses `URLSession.shared` with `.useProtocolCachePolicy`, so standard HTTP response headers control caching and revalidation.
 
-The suggestions catalog is a bundled JSON asset decoded by `LocalSuggestionCatalogProvider`. The UI depends on `LoadSuggestionsUseCase`, so moving the catalog to a backend or remote configuration only requires supplying another `SuggestionCatalogProviding` implementation in the FactoryKit registration.
+`DefaultLocationsProvider` supplies both the remote assignment feed and the bundled suggestions catalog. The use cases only depend on `LocationsProviding`, so moving either source to a backend or remote configuration is isolated to the provider implementation and its FactoryKit registration.
 
 ## License
 

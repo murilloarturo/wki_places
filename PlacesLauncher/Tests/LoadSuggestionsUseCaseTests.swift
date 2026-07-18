@@ -14,20 +14,21 @@ final class LoadSuggestionsUseCaseTests: XCTestCase {
                 tone: .cyan
             )
         ]
-        let provider = StubSuggestionCatalogProvider(result: .success(dto))
+        let provider = StubLocationsProvider(catalogResult: .success(dto))
         let mapper = StubSuggestionCatalogMapper(result: .success(expected))
         let useCase = DefaultLoadSuggestionsUseCase(provider: provider, mapper: mapper)
 
         let suggestions = try await useCase.execute()
 
         XCTAssertEqual(suggestions, expected)
-        XCTAssertEqual(provider.callCount, 1)
+        XCTAssertEqual(provider.catalogCallCount, 1)
+        XCTAssertEqual(provider.feedCallCount, 0)
         XCTAssertEqual(mapper.receivedDTOs, [dto])
     }
 
     func testPropagatesProviderFailureWithoutMapping() async {
-        let provider = StubSuggestionCatalogProvider(
-            result: .failure(LocalSuggestionCatalogProviderError.decodingFailed)
+        let provider = StubLocationsProvider(
+            catalogResult: .failure(LocationsProviderError.decodingFailed)
         )
         let mapper = StubSuggestionCatalogMapper(result: .success([]))
         let useCase = DefaultLoadSuggestionsUseCase(provider: provider, mapper: mapper)
@@ -37,25 +38,11 @@ final class LoadSuggestionsUseCaseTests: XCTestCase {
             XCTFail("Expected the provider error")
         } catch {
             XCTAssertEqual(
-                error as? LocalSuggestionCatalogProviderError,
+                error as? LocationsProviderError,
                 .decodingFailed
             )
             XCTAssertTrue(mapper.receivedDTOs.isEmpty)
         }
-    }
-}
-
-private final class StubSuggestionCatalogProvider: SuggestionCatalogProviding {
-    let result: Result<SuggestionCatalogDTO, Error>
-    private(set) var callCount = 0
-
-    init(result: Result<SuggestionCatalogDTO, Error>) {
-        self.result = result
-    }
-
-    func fetchCatalog() async throws -> SuggestionCatalogDTO {
-        callCount += 1
-        return try result.get()
     }
 }
 

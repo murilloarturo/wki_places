@@ -4,7 +4,7 @@ import XCTest
 final class SuggestionPickerTests: XCTestCase {
     func testBundledCatalogContainsTwentyNineUniqueValidPlaces() async throws {
         let useCase = DefaultLoadSuggestionsUseCase(
-            provider: LocalSuggestionCatalogProvider(bundle: .main),
+            provider: DefaultLocationsProvider(bundle: .main),
             mapper: SuggestionCatalogMapper(
                 localizer: BundleStringLocalizer(bundle: .main)
             )

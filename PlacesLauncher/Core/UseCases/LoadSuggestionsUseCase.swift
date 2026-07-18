@@ -3,11 +3,11 @@ protocol LoadSuggestionsUseCase {
 }
 
 struct DefaultLoadSuggestionsUseCase: LoadSuggestionsUseCase {
-    private let provider: any SuggestionCatalogProviding
+    private let provider: any LocationsProviding
     private let mapper: any SuggestionCatalogMapping
 
     init(
-        provider: any SuggestionCatalogProviding,
+        provider: any LocationsProviding,
         mapper: any SuggestionCatalogMapping = SuggestionCatalogMapper()
     ) {
         self.provider = provider

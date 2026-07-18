@@ -5,8 +5,10 @@ extension Container {
         self { JSONHTTPClient() }
     }
 
-    var suggestionCatalogProvider: Factory<any SuggestionCatalogProviding> {
-        self { LocalSuggestionCatalogProvider() }
+    var locationsProvider: Factory<any LocationsProviding> {
+        self {
+            DefaultLocationsProvider(httpClient: self.httpClient())
+        }
     }
 
     var locationSearcher: Factory<any LocationSearching> {
@@ -20,14 +22,14 @@ extension Container {
 
     var fetchLocationsUseCase: Factory<any FetchLocationsUseCase> {
         self {
-            DefaultFetchLocationsUseCase(httpClient: self.httpClient())
+            DefaultFetchLocationsUseCase(provider: self.locationsProvider())
         }
     }
 
     var loadSuggestionsUseCase: Factory<any LoadSuggestionsUseCase> {
         self {
             DefaultLoadSuggestionsUseCase(
-                provider: self.suggestionCatalogProvider()
+                provider: self.locationsProvider()
             )
         }
     }
