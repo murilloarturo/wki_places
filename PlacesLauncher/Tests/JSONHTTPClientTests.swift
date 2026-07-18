@@ -19,7 +19,7 @@ final class JSONHTTPClientTests: XCTestCase {
             LocationDTO(name: "Copenhagen", latitude: 55.6713442, longitude: 12.523785)
         ])
         XCTAssertEqual(loader.requests.map(\.url), [LocationFeedEndpoint.assignment.url])
-        XCTAssertEqual(loader.requests.first?.cachePolicy, .useProtocolCachePolicy)
+        XCTAssertEqual(loader.requests.first?.cachePolicy, .reloadIgnoringLocalCacheData)
     }
 
     func testFetchMapsHTTPFailure() async {

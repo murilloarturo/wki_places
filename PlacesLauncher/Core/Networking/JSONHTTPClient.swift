@@ -62,7 +62,10 @@ struct JSONHTTPClient: HTTPClient {
         _ type: Value.Type,
         from endpoint: HTTPEndpoint
     ) async throws -> Value {
-        let request = URLRequest(url: endpoint.url)
+        let request = URLRequest(
+            url: endpoint.url,
+            cachePolicy: .reloadIgnoringLocalCacheData
+        )
         let (data, response) = try await dataLoader.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw HTTPClientError.invalidResponse
