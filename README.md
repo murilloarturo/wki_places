@@ -35,7 +35,8 @@ The app uses feature-based MVVM with a protocol-oriented use-case boundary:
 - Concrete use cases own HTTP and MapKit service references.
 - Codable DTOs and explicit mappers keep transport fields out of domain models.
 - `LoadSuggestionsUseCase` depends on `SuggestionCatalogProviding`, with the current implementation reading bundled JSON.
-- `AppContainer` assembles dependencies without global singletons.
+- FactoryKit registers services and use cases in `Dependencies.swift`.
+- Each view model exposes a static production `make()` method while retaining an injectable initializer for tests.
 
 ## Localization
 
@@ -90,7 +91,7 @@ PlacesLauncher/
 
 No secrets or environment variables are required. The public assignment feed URL and its `GET` method are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses `URLSession.shared` with `.useProtocolCachePolicy`, so standard HTTP response headers control caching and revalidation.
 
-The suggestions catalog is a bundled JSON asset decoded by `LocalSuggestionCatalogProvider`. The UI depends on `LoadSuggestionsUseCase`, so moving the catalog to a backend or remote configuration only requires supplying another `SuggestionCatalogProviding` implementation in `AppContainer`.
+The suggestions catalog is a bundled JSON asset decoded by `LocalSuggestionCatalogProvider`. The UI depends on `LoadSuggestionsUseCase`, so moving the catalog to a backend or remote configuration only requires supplying another `SuggestionCatalogProviding` implementation in the FactoryKit registration.
 
 ## License
 
