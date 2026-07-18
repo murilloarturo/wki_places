@@ -24,26 +24,26 @@ struct PlacesHomeView: View {
                 await viewModel.loadIfNeeded()
             }
             .alert(
-                "Couldn’t Open Wikipedia",
+                L10n.Wikipedia.Error.title,
                 isPresented: Binding(
                     get: { alertMessage != nil },
                     set: { if !$0 { alertMessage = nil } }
                 )
             ) {
-                Button("OK", role: .cancel) {}
+                Button(L10n.Common.ok, role: .cancel) {}
             } message: {
-                Text(alertMessage ?? "Please try again.")
+                Text(alertMessage ?? L10n.Wikipedia.Error.fallback)
             }
         }
     }
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 7) {
-            Text("Places")
+            Text(L10n.Home.title)
                 .font(.system(.largeTitle, design: .rounded, weight: .bold))
                 .foregroundStyle(AppPalette.ink)
 
-            Text("Where should Wikipedia take you?")
+            Text(L10n.Home.subtitle)
                 .font(.subheadline)
                 .foregroundStyle(AppPalette.secondaryInk)
         }
@@ -67,9 +67,9 @@ struct PlacesHomeView: View {
                     .background(AppPalette.blue, in: RoundedRectangle(cornerRadius: 8))
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("Choose on Map")
+                    Text(L10n.Home.ChooseMap.title)
                         .font(.headline)
-                    Text("Search or drop a pin")
+                    Text(L10n.Home.ChooseMap.subtitle)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -85,8 +85,8 @@ struct PlacesHomeView: View {
             .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Choose on Map")
-        .accessibilityHint("Search for a place or choose a coordinate on Apple Maps")
+        .accessibilityLabel(L10n.Home.ChooseMap.title)
+        .accessibilityHint(L10n.Home.ChooseMap.accessibilityHint)
     }
 
     private var suggestionsLink: some View {
@@ -95,13 +95,13 @@ struct PlacesHomeView: View {
         } label: {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 7) {
-                    Text("BONUS MAP")
+                    Text(L10n.Home.Bonus.eyebrow)
                         .font(.caption.monospaced().weight(.black))
                         .foregroundStyle(Color.cyan)
-                    Text("Explore unusual places")
+                    Text(L10n.Home.Bonus.title)
                         .font(.headline)
                         .foregroundStyle(.white)
-                    Text("9 curious destinations")
+                    Text(L10n.Home.Bonus.subtitle)
                         .font(.caption.monospaced())
                         .foregroundStyle(Color.white.opacity(0.68))
                 }
@@ -134,13 +134,13 @@ struct PlacesHomeView: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Explore unusual places")
-        .accessibilityHint("Opens the retro suggestions map")
+        .accessibilityLabel(L10n.Home.Bonus.title)
+        .accessibilityHint(L10n.Home.Bonus.accessibilityHint)
     }
 
     private var locationsSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("FROM THE FEED")
+            Text(L10n.Feed.title)
                 .font(.caption.weight(.bold))
                 .foregroundStyle(.secondary)
 
@@ -163,19 +163,19 @@ struct PlacesHomeView: View {
     private var loadingState: some View {
         HStack(spacing: 12) {
             ProgressView()
-            Text("Loading locations…")
+            Text(L10n.Feed.loading)
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, minHeight: 88)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Loading locations")
+        .accessibilityLabel(L10n.Feed.loading)
     }
 
     private var emptyState: some View {
         ContentUnavailableView(
-            "No Locations",
+            L10n.Feed.Empty.title,
             systemImage: "map",
-            description: Text("The feed is currently empty.")
+            description: Text(L10n.Feed.Empty.description)
         )
         .frame(minHeight: 150)
     }
@@ -205,7 +205,7 @@ struct PlacesHomeView: View {
                 .font(.title2)
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
-            Text("Locations Unavailable")
+            Text(L10n.Feed.Error.title)
                 .font(.headline)
             Text(message)
                 .font(.subheadline)
@@ -214,7 +214,7 @@ struct PlacesHomeView: View {
             Button {
                 Task { await viewModel.load() }
             } label: {
-                Label("Try Again", systemImage: "arrow.clockwise")
+                Label(L10n.Feed.retry, systemImage: "arrow.clockwise")
             }
             .buttonStyle(.borderedProminent)
         }

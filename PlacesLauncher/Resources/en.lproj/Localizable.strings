@@ -1,0 +1,92 @@
+"common.cancel" = "Cancel";
+"common.ok" = "OK";
+
+"coordinate.error.latitude" = "Latitude must be between -90 and 90.";
+"coordinate.error.longitude" = "Longitude must be between -180 and 180.";
+"coordinate.error.non_finite" = "The selected coordinate is not valid.";
+
+"custom.accessibility.clear_search" = "Clear search";
+"custom.accessibility.confirm_hint" = "Confirms this coordinate and opens Wikipedia Places";
+"custom.accessibility.map_moved" = "Map moved to %@";
+"custom.accessibility.pin_label" = "Selection pin";
+"custom.accessibility.pin_value" = "The coordinate at the center of the map will be selected";
+"custom.accessibility.search" = "Search";
+"custom.accessibility.search_hint" = "Enter a city, landmark, or address";
+"custom.accessibility.searching" = "Searching Apple Maps";
+"custom.accessibility.selected" = "Selected %@, coordinates %@";
+"custom.dropped_pin" = "Dropped Pin";
+"custom.dropped_pin_name" = "Dropped pin";
+"custom.error.no_selection" = "Move the map or search for a place before confirming.";
+"custom.move_map_to_select" = "Move the map to select";
+"custom.open_wikipedia" = "Open in Wikipedia";
+"custom.search.placeholder" = "Search for a place";
+"custom.search_result" = "search result";
+"custom.title" = "Choose on Map";
+
+"feed.empty.description" = "The feed is currently empty.";
+"feed.empty.title" = "No Locations";
+"feed.error.decoding" = "The locations could not be read.";
+"feed.error.fallback" = "The locations could not be loaded.";
+"feed.error.http_status" = "The locations service returned status %d.";
+"feed.error.invalid_response" = "The locations service returned an invalid response.";
+"feed.error.title" = "Locations Unavailable";
+"feed.loading" = "Loading locations...";
+"feed.retry" = "Try Again";
+"feed.title" = "FROM THE FEED";
+
+"home.bonus.accessibility_hint" = "Opens the retro suggestions map";
+"home.bonus.eyebrow" = "BONUS MAP";
+"home.bonus.subtitle" = "9 curious destinations";
+"home.bonus.title" = "Explore unusual places";
+"home.choose_map.accessibility_hint" = "Search for a place or choose a coordinate on Apple Maps";
+"home.choose_map.subtitle" = "Search or drop a pin";
+"home.choose_map.title" = "Choose on Map";
+"home.subtitle" = "Where should Wikipedia take you?";
+"home.title" = "Places";
+
+"location.accessibility.label" = "%@, coordinates %@";
+"location.accessibility.open_hint" = "Opens this location in Wikipedia Places";
+"location.unnamed" = "Unnamed location";
+
+"search.error.empty" = "Enter a place to search for.";
+"search.error.no_results" = "No matching place was found. Try a more specific search.";
+"search.error.unavailable" = "Apple Maps search is unavailable right now.";
+
+"suggestions.accessibility.back_hint" = "Returns to Places with the standard appearance";
+"suggestions.accessibility.surprise_hint" = "Opens one of the unusual places at random";
+"suggestions.accessibility.tile" = "%@, %@, coordinates %@";
+"suggestions.back" = "BACK";
+"suggestions.coordinate_count" = "CURIOUS COORDINATES // 09";
+"suggestions.error.empty" = "No destinations are available.";
+"suggestions.error.fallback" = "Wikipedia could not be opened.";
+"suggestions.error.title" = "MISSION FAILED";
+"suggestions.go" = "GO";
+"suggestions.random_destination" = "RANDOM DESTINATION";
+"suggestions.select_level" = "SELECT A LEVEL";
+"suggestions.surprise" = "SURPRISE ME";
+
+"suggestions.apple_park.subtitle" = "Cupertino's spaceship campus";
+"suggestions.apple_park.title" = "Apple Park";
+"suggestions.area_51.subtitle" = "Restricted desert airfield";
+"suggestions.area_51.title" = "Area 51";
+"suggestions.bermuda_triangle.subtitle" = "North Atlantic mystery zone";
+"suggestions.bermuda_triangle.title" = "Bermuda Triangle";
+"suggestions.cern.subtitle" = "Large Hadron Collider";
+"suggestions.cern.title" = "CERN";
+"suggestions.darvaza.location_name" = "Darvaza gas crater";
+"suggestions.darvaza.subtitle" = "The Door to Hell";
+"suggestions.darvaza.title" = "Darvaza Crater";
+"suggestions.null_island.subtitle" = "Where zero meets zero";
+"suggestions.null_island.title" = "Null Island";
+"suggestions.point_nemo.subtitle" = "Oceanic pole of inaccessibility";
+"suggestions.point_nemo.title" = "Point Nemo";
+"suggestions.rapa_nui.subtitle" = "Island of the moai";
+"suggestions.rapa_nui.title" = "Rapa Nui";
+"suggestions.svalbard.location_name" = "Svalbard Global Seed Vault";
+"suggestions.svalbard.subtitle" = "Arctic crop time capsule";
+"suggestions.svalbard.title" = "Svalbard Seed Vault";
+
+"wikipedia.error.could_not_open" = "Wikipedia could not be opened. Make sure the assignment build is installed.";
+"wikipedia.error.fallback" = "Please try again.";
+"wikipedia.error.invalid_coordinate" = "That coordinate cannot be opened.";
+"wikipedia.error.title" = "Couldn't Open Wikipedia";

@@ -11,17 +11,40 @@ Implementation branch: `codex/places-launcher-app`. This branch is intentionally
 - macOS with Xcode 26.4 or a compatible Xcode release
 - iOS 17+ simulator or device
 - XcodeGen 2.45+
+- SwiftGen 6.6+
 - The locally signed modified Wikipedia iOS app installed with support for `wikipedia://places?lat=<latitude>&lon=<longitude>`
 
 ## Generate and Run
 
 ```sh
 cd PlacesLauncher
+./scripts/generate-localizations.sh
 /opt/homebrew/bin/xcodegen generate
 open PlacesLauncher.xcodeproj
 ```
 
-Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. The generated Xcode project is ignored because `project.yml` is the source of truth.
+Select the `PlacesLauncher` scheme and run on an iOS 17+ device or simulator. The generated Xcode project is ignored because `project.yml` is the source of truth. Xcode also runs the SwiftGen script before builds when the source strings change.
+
+## Architecture
+
+The app uses feature-based MVVM with lightweight protocol-oriented services:
+
+- SwiftUI views own presentation and navigation.
+- `@MainActor` observable view models own screen state and async actions.
+- Codable domain models represent feed and selected locations.
+- Protocol-backed feed, map-search, and Wikipedia-launching services keep platform and network work testable.
+- Dependencies are injected at feature boundaries instead of accessed through global singletons.
+
+## Localization
+
+English and Spanish are supported. English `Localizable.strings` is SwiftGen's source catalog, and the generated `L10n` enum is used throughout views, accessibility labels, errors, and destination content.
+
+```sh
+cd PlacesLauncher
+./scripts/generate-localizations.sh
+```
+
+Add new keys to both files under `Resources`, regenerate `Generated/Strings+Generated.swift`, and commit the source catalogs together with the generated code.
 
 ## Build and Test
 
@@ -48,7 +71,11 @@ PlacesLauncher/
 ├── App/
 ├── Core/
 ├── Features/
+├── Generated/
+├── Resources/
+├── scripts/
 ├── Tests/
+├── swiftgen.yml
 └── project.yml
 ```
 

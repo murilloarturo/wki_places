@@ -31,8 +31,12 @@ struct LocationRow: View {
         .padding(.vertical, 12)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(location.displayName), coordinates \(location.formattedCoordinates)")
-        .accessibilityHint("Opens this location in Wikipedia Places")
+        .accessibilityLabel(
+            L10n.Location.Accessibility.label(
+                location.displayName,
+                location.formattedCoordinates
+            )
+        )
+        .accessibilityHint(L10n.Location.Accessibility.openHint)
     }
 }
-

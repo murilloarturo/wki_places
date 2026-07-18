@@ -52,15 +52,15 @@ struct SuggestionsView: View {
             }
         }
         .alert(
-            "MISSION FAILED",
+            L10n.Suggestions.Error.title,
             isPresented: Binding(
                 get: { alertMessage != nil },
                 set: { if !$0 { alertMessage = nil } }
             )
         ) {
-            Button("OK", role: .cancel) {}
+            Button(L10n.Common.ok, role: .cancel) {}
         } message: {
-            Text(alertMessage ?? "Wikipedia could not be opened.")
+            Text(alertMessage ?? L10n.Suggestions.Error.fallback)
         }
     }
 
@@ -69,19 +69,19 @@ struct SuggestionsView: View {
             Button {
                 dismiss()
             } label: {
-                Label("BACK", systemImage: "chevron.left")
+                Label(L10n.Suggestions.back, systemImage: "chevron.left")
                     .font(.subheadline.weight(.black))
                     .foregroundStyle(Color.cyan)
                     .frame(minHeight: 44)
             }
             .buttonStyle(.plain)
-            .accessibilityHint("Returns to Places with the standard appearance")
+            .accessibilityHint(L10n.Suggestions.Accessibility.backHint)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("SELECT A LEVEL")
+                Text(L10n.Suggestions.selectLevel)
                     .font(.system(.largeTitle, design: .monospaced, weight: .black))
                     .foregroundStyle(Color.yellow)
-                Text("CURIOUS COORDINATES // 09")
+                Text(L10n.Suggestions.coordinateCount)
                     .font(.caption.weight(.bold))
                     .foregroundStyle(Color.cyan)
             }
@@ -93,7 +93,7 @@ struct SuggestionsView: View {
     private var surpriseButton: some View {
         Button {
             guard let suggestion = picker.surprise(from: suggestions) else {
-                alertMessage = "No destinations are available."
+                alertMessage = L10n.Suggestions.Error.empty
                 return
             }
             openInWikipedia(suggestion.location)
@@ -103,9 +103,9 @@ struct SuggestionsView: View {
                     .font(.title2)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("SURPRISE ME")
+                    Text(L10n.Suggestions.surprise)
                         .font(.headline.weight(.black))
-                    Text("RANDOM DESTINATION")
+                    Text(L10n.Suggestions.randomDestination)
                         .font(.caption2.weight(.bold))
                         .opacity(0.7)
                 }
@@ -122,7 +122,7 @@ struct SuggestionsView: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityHint("Opens one of the unusual places at random")
+        .accessibilityHint(L10n.Suggestions.Accessibility.surpriseHint)
     }
 
     private var destinationGrid: some View {
@@ -152,7 +152,7 @@ struct SuggestionsView: View {
                         .foregroundStyle(color(for: suggestion.tone))
                         .accessibilityHidden(true)
                     Spacer()
-                    Text("GO")
+                    Text(L10n.Suggestions.go)
                         .font(.caption2.weight(.black))
                         .foregroundStyle(color(for: suggestion.tone))
                 }
@@ -186,9 +186,13 @@ struct SuggestionsView: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            "\(suggestion.title), \(suggestion.subtitle), coordinates \(suggestion.location.formattedCoordinates)"
+            L10n.Suggestions.Accessibility.tile(
+                suggestion.title,
+                suggestion.subtitle,
+                suggestion.location.formattedCoordinates
+            )
         )
-        .accessibilityHint("Opens this location in Wikipedia Places")
+        .accessibilityHint(L10n.Location.Accessibility.openHint)
     }
 
     private func color(for tone: SuggestionTone) -> Color {
@@ -210,4 +214,3 @@ struct SuggestionsView: View {
         }
     }
 }
-

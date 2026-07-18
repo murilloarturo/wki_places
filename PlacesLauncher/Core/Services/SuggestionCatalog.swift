@@ -20,65 +20,65 @@ struct SuggestedPlace: Identifiable, Equatable, Hashable, Sendable {
 enum SuggestionCatalog {
     static let places: [SuggestedPlace] = [
         SuggestedPlace(
-            title: "Apple Park",
-            subtitle: "Cupertino's spaceship campus",
-            location: PlaceLocation(name: "Apple Park", latitude: 37.33489, longitude: -122.00899),
+            title: L10n.Suggestions.ApplePark.title,
+            subtitle: L10n.Suggestions.ApplePark.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.ApplePark.title, latitude: 37.33489, longitude: -122.00899),
             symbol: "apple.logo",
             tone: .cyan
         ),
         SuggestedPlace(
-            title: "Area 51",
-            subtitle: "Restricted desert airfield",
-            location: PlaceLocation(name: "Area 51", latitude: 37.23500, longitude: -115.81111),
+            title: L10n.Suggestions.Area51.title,
+            subtitle: L10n.Suggestions.Area51.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.Area51.title, latitude: 37.23500, longitude: -115.81111),
             symbol: "sparkles",
             tone: .magenta
         ),
         SuggestedPlace(
-            title: "CERN",
-            subtitle: "Large Hadron Collider",
-            location: PlaceLocation(name: "CERN", latitude: 46.23300, longitude: 6.05580),
+            title: L10n.Suggestions.Cern.title,
+            subtitle: L10n.Suggestions.Cern.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.Cern.title, latitude: 46.23300, longitude: 6.05580),
             symbol: "atom",
             tone: .yellow
         ),
         SuggestedPlace(
-            title: "Rapa Nui",
-            subtitle: "Island of the moai",
-            location: PlaceLocation(name: "Rapa Nui", latitude: -27.11272, longitude: -109.34969),
+            title: L10n.Suggestions.RapaNui.title,
+            subtitle: L10n.Suggestions.RapaNui.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.RapaNui.title, latitude: -27.11272, longitude: -109.34969),
             symbol: "face.smiling.inverse",
             tone: .mint
         ),
         SuggestedPlace(
-            title: "Svalbard Seed Vault",
-            subtitle: "Arctic crop time capsule",
-            location: PlaceLocation(name: "Svalbard Global Seed Vault", latitude: 78.23583, longitude: 15.49194),
+            title: L10n.Suggestions.Svalbard.title,
+            subtitle: L10n.Suggestions.Svalbard.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.Svalbard.locationName, latitude: 78.23583, longitude: 15.49194),
             symbol: "leaf.fill",
             tone: .cyan
         ),
         SuggestedPlace(
-            title: "Point Nemo",
-            subtitle: "Oceanic pole of inaccessibility",
-            location: PlaceLocation(name: "Point Nemo", latitude: -48.87630, longitude: -123.39330),
+            title: L10n.Suggestions.PointNemo.title,
+            subtitle: L10n.Suggestions.PointNemo.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.PointNemo.title, latitude: -48.87630, longitude: -123.39330),
             symbol: "water.waves",
             tone: .magenta
         ),
         SuggestedPlace(
-            title: "Null Island",
-            subtitle: "Where zero meets zero",
-            location: PlaceLocation(name: "Null Island", latitude: 0, longitude: 0),
+            title: L10n.Suggestions.NullIsland.title,
+            subtitle: L10n.Suggestions.NullIsland.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.NullIsland.title, latitude: 0, longitude: 0),
             symbol: "scope",
             tone: .yellow
         ),
         SuggestedPlace(
-            title: "Bermuda Triangle",
-            subtitle: "North Atlantic mystery zone",
-            location: PlaceLocation(name: "Bermuda Triangle", latitude: 25, longitude: -71),
+            title: L10n.Suggestions.BermudaTriangle.title,
+            subtitle: L10n.Suggestions.BermudaTriangle.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.BermudaTriangle.title, latitude: 25, longitude: -71),
             symbol: "triangle.fill",
             tone: .mint
         ),
         SuggestedPlace(
-            title: "Darvaza Crater",
-            subtitle: "The Door to Hell",
-            location: PlaceLocation(name: "Darvaza gas crater", latitude: 40.25250, longitude: 58.43960),
+            title: L10n.Suggestions.Darvaza.title,
+            subtitle: L10n.Suggestions.Darvaza.subtitle,
+            location: PlaceLocation(name: L10n.Suggestions.Darvaza.locationName, latitude: 40.25250, longitude: 58.43960),
             symbol: "flame.fill",
             tone: .magenta
         )
@@ -109,4 +109,3 @@ struct SuggestionPicker {
         return suggestions[index]
     }
 }
-

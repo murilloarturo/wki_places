@@ -54,11 +54,11 @@ struct CustomLocationView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 confirmationPanel
             }
-            .navigationTitle("Choose on Map")
+            .navigationTitle(L10n.Custom.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Cancel") {
+                    Button(L10n.Common.cancel) {
                         searchTask?.cancel()
                         dismiss()
                     }
@@ -84,7 +84,9 @@ struct CustomLocationView: View {
                 }
                 UIAccessibility.post(
                     notification: .announcement,
-                    argument: "Map moved to \(viewModel.selectedName ?? "search result")"
+                    argument: L10n.Custom.Accessibility.mapMoved(
+                        viewModel.selectedName ?? L10n.Custom.searchResult
+                    )
                 )
             }
             .onChange(of: viewModel.errorMessage) {
@@ -92,15 +94,15 @@ struct CustomLocationView: View {
                 UIAccessibility.post(notification: .announcement, argument: message)
             }
             .alert(
-                "Couldn’t Open Wikipedia",
+                L10n.Wikipedia.Error.title,
                 isPresented: Binding(
                     get: { alertMessage != nil },
                     set: { if !$0 { alertMessage = nil } }
                 )
             ) {
-                Button("OK", role: .cancel) {}
+                Button(L10n.Common.ok, role: .cancel) {}
             } message: {
-                Text(alertMessage ?? "Please try again.")
+                Text(alertMessage ?? L10n.Wikipedia.Error.fallback)
             }
     }
 
@@ -111,18 +113,18 @@ struct CustomLocationView: View {
                     .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
 
-                TextField("Search for a place", text: $viewModel.query)
+                TextField(L10n.Custom.Search.placeholder, text: $viewModel.query)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled(false)
                     .submitLabel(.search)
                     .focused($isSearchFocused)
                     .onSubmit(runSearch)
-                    .accessibilityHint("Enter a city, landmark, or address")
+                    .accessibilityHint(L10n.Custom.Accessibility.searchHint)
 
                 if viewModel.isSearching {
                     ProgressView()
                         .controlSize(.small)
-                        .accessibilityLabel("Searching Apple Maps")
+                        .accessibilityLabel(L10n.Custom.Accessibility.searching)
                 } else if !viewModel.query.isEmpty {
                     Button {
                         viewModel.query = ""
@@ -132,7 +134,7 @@ struct CustomLocationView: View {
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(.secondary)
-                    .accessibilityLabel("Clear search")
+                    .accessibilityLabel(L10n.Custom.Accessibility.clearSearch)
                 }
 
                 Button(action: runSearch) {
@@ -141,7 +143,7 @@ struct CustomLocationView: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(viewModel.isSearching)
-                .accessibilityLabel("Search")
+                .accessibilityLabel(L10n.Custom.Accessibility.search)
             }
             .padding(.horizontal, 12)
             .frame(minHeight: 50)
@@ -173,8 +175,8 @@ struct CustomLocationView: View {
         .offset(y: -22)
         .allowsHitTesting(false)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Selection pin")
-        .accessibilityValue("The coordinate at the center of the map will be selected")
+        .accessibilityLabel(L10n.Custom.Accessibility.pinLabel)
+        .accessibilityValue(L10n.Custom.Accessibility.pinValue)
     }
 
     private var confirmationPanel: some View {
@@ -186,7 +188,7 @@ struct CustomLocationView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.selectedName ?? "Dropped Pin")
+                    Text(viewModel.selectedName ?? L10n.Custom.droppedPin)
                         .font(.headline)
                     Text(selectedCoordinateText)
                         .font(.caption.monospacedDigit())
@@ -195,17 +197,20 @@ struct CustomLocationView: View {
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel(
-                "Selected \(viewModel.selectedName ?? "dropped pin"), coordinates \(selectedCoordinateText)"
+                L10n.Custom.Accessibility.selected(
+                    viewModel.selectedName ?? L10n.Custom.droppedPinName,
+                    selectedCoordinateText
+                )
             )
 
             Button(action: confirmSelection) {
-                Label("Open in Wikipedia", systemImage: "arrow.up.forward.app.fill")
+                Label(L10n.Custom.openWikipedia, systemImage: "arrow.up.forward.app.fill")
                     .font(.headline)
                     .frame(maxWidth: .infinity, minHeight: 50)
             }
             .buttonStyle(.borderedProminent)
             .disabled(viewModel.selectedCoordinate == nil)
-            .accessibilityHint("Confirms this coordinate and opens Wikipedia Places")
+            .accessibilityHint(L10n.Custom.Accessibility.confirmHint)
         }
         .padding(.horizontal, 18)
         .padding(.top, 16)
@@ -215,7 +220,7 @@ struct CustomLocationView: View {
 
     private var selectedCoordinateText: String {
         guard let coordinate = viewModel.selectedCoordinate else {
-            return "Move the map to select"
+            return L10n.Custom.moveMapToSelect
         }
         return PlaceLocation(
             name: nil,
@@ -243,4 +248,3 @@ struct CustomLocationView: View {
         }
     }
 }
-

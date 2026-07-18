@@ -33,9 +33,8 @@ final class LocationFeedViewModel: ObservableObject {
         } catch {
             state = .failed(
                 (error as? LocalizedError)?.errorDescription
-                    ?? "The locations could not be loaded."
+                    ?? L10n.Feed.Error.fallback
             )
         }
     }
 }
-

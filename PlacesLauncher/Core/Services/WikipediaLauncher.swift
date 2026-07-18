@@ -8,9 +8,9 @@ enum WikipediaDeepLinkError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .invalidCoordinate:
-            return "That coordinate cannot be opened."
+            return L10n.Wikipedia.Error.invalidCoordinate
         case .couldNotOpen:
-            return "Wikipedia could not be opened. Make sure the assignment build is installed."
+            return L10n.Wikipedia.Error.couldNotOpen
         }
     }
 }
@@ -64,4 +64,3 @@ struct WikipediaLauncher: WikipediaOpening {
         }
     }
 }
-

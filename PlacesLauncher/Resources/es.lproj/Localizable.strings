@@ -1,0 +1,92 @@
+"common.cancel" = "Cancelar";
+"common.ok" = "Aceptar";
+
+"coordinate.error.latitude" = "La latitud debe estar entre -90 y 90.";
+"coordinate.error.longitude" = "La longitud debe estar entre -180 y 180.";
+"coordinate.error.non_finite" = "La coordenada seleccionada no es válida.";
+
+"custom.accessibility.clear_search" = "Borrar búsqueda";
+"custom.accessibility.confirm_hint" = "Confirma esta coordenada y abre Lugares en Wikipedia";
+"custom.accessibility.map_moved" = "Mapa desplazado a %@";
+"custom.accessibility.pin_label" = "Marcador de selección";
+"custom.accessibility.pin_value" = "Se seleccionará la coordenada situada en el centro del mapa";
+"custom.accessibility.search" = "Buscar";
+"custom.accessibility.search_hint" = "Introduce una ciudad, un lugar o una dirección";
+"custom.accessibility.searching" = "Buscando en Mapas de Apple";
+"custom.accessibility.selected" = "%@ seleccionado, coordenadas %@";
+"custom.dropped_pin" = "Marcador";
+"custom.dropped_pin_name" = "Marcador";
+"custom.error.no_selection" = "Mueve el mapa o busca un lugar antes de confirmar.";
+"custom.move_map_to_select" = "Mueve el mapa para seleccionar";
+"custom.open_wikipedia" = "Abrir en Wikipedia";
+"custom.search.placeholder" = "Buscar un lugar";
+"custom.search_result" = "resultado de búsqueda";
+"custom.title" = "Elegir en el mapa";
+
+"feed.empty.description" = "La fuente no contiene ubicaciones.";
+"feed.empty.title" = "No hay ubicaciones";
+"feed.error.decoding" = "No se pudieron leer las ubicaciones.";
+"feed.error.fallback" = "No se pudieron cargar las ubicaciones.";
+"feed.error.http_status" = "El servicio de ubicaciones devolvió el estado %d.";
+"feed.error.invalid_response" = "El servicio de ubicaciones devolvió una respuesta no válida.";
+"feed.error.title" = "Ubicaciones no disponibles";
+"feed.loading" = "Cargando ubicaciones...";
+"feed.retry" = "Reintentar";
+"feed.title" = "DE LA FUENTE";
+
+"home.bonus.accessibility_hint" = "Abre el mapa retro de sugerencias";
+"home.bonus.eyebrow" = "MAPA EXTRA";
+"home.bonus.subtitle" = "9 destinos curiosos";
+"home.bonus.title" = "Explora lugares inusuales";
+"home.choose_map.accessibility_hint" = "Busca un lugar o elige una coordenada en Mapas de Apple";
+"home.choose_map.subtitle" = "Busca o coloca un marcador";
+"home.choose_map.title" = "Elegir en el mapa";
+"home.subtitle" = "¿Adónde debería llevarte Wikipedia?";
+"home.title" = "Lugares";
+
+"location.accessibility.label" = "%@, coordenadas %@";
+"location.accessibility.open_hint" = "Abre esta ubicación en Lugares de Wikipedia";
+"location.unnamed" = "Ubicación sin nombre";
+
+"search.error.empty" = "Introduce un lugar para buscar.";
+"search.error.no_results" = "No se encontró ningún lugar. Prueba una búsqueda más específica.";
+"search.error.unavailable" = "La búsqueda de Mapas de Apple no está disponible ahora.";
+
+"suggestions.accessibility.back_hint" = "Vuelve a Lugares con la apariencia estándar";
+"suggestions.accessibility.surprise_hint" = "Abre al azar uno de los lugares inusuales";
+"suggestions.accessibility.tile" = "%@, %@, coordenadas %@";
+"suggestions.back" = "VOLVER";
+"suggestions.coordinate_count" = "COORDENADAS CURIOSAS // 09";
+"suggestions.error.empty" = "No hay destinos disponibles.";
+"suggestions.error.fallback" = "No se pudo abrir Wikipedia.";
+"suggestions.error.title" = "MISIÓN FALLIDA";
+"suggestions.go" = "IR";
+"suggestions.random_destination" = "DESTINO ALEATORIO";
+"suggestions.select_level" = "ELIGE UN NIVEL";
+"suggestions.surprise" = "SORPRÉNDEME";
+
+"suggestions.apple_park.subtitle" = "El campus espacial de Cupertino";
+"suggestions.apple_park.title" = "Apple Park";
+"suggestions.area_51.subtitle" = "Aeródromo restringido en el desierto";
+"suggestions.area_51.title" = "Área 51";
+"suggestions.bermuda_triangle.subtitle" = "Zona misteriosa del Atlántico Norte";
+"suggestions.bermuda_triangle.title" = "Triángulo de las Bermudas";
+"suggestions.cern.subtitle" = "Gran Colisionador de Hadrones";
+"suggestions.cern.title" = "CERN";
+"suggestions.darvaza.location_name" = "Cráter de gas de Darvaza";
+"suggestions.darvaza.subtitle" = "La Puerta del Infierno";
+"suggestions.darvaza.title" = "Cráter de Darvaza";
+"suggestions.null_island.subtitle" = "Donde el cero se encuentra con el cero";
+"suggestions.null_island.title" = "Isla Null";
+"suggestions.point_nemo.subtitle" = "Polo oceánico de inaccesibilidad";
+"suggestions.point_nemo.title" = "Punto Nemo";
+"suggestions.rapa_nui.subtitle" = "La isla de los moáis";
+"suggestions.rapa_nui.title" = "Rapa Nui";
+"suggestions.svalbard.location_name" = "Banco Mundial de Semillas de Svalbard";
+"suggestions.svalbard.subtitle" = "Cápsula del tiempo agrícola del Ártico";
+"suggestions.svalbard.title" = "Banco de Semillas de Svalbard";
+
+"wikipedia.error.could_not_open" = "No se pudo abrir Wikipedia. Comprueba que la versión de la tarea esté instalada.";
+"wikipedia.error.fallback" = "Inténtalo de nuevo.";
+"wikipedia.error.invalid_coordinate" = "No se puede abrir esa coordenada.";
+"wikipedia.error.title" = "No se pudo abrir Wikipedia";

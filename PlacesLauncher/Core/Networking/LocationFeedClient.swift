@@ -24,11 +24,11 @@ enum LocationFeedError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
-            return "The locations service returned an invalid response."
+            return L10n.Feed.Error.invalidResponse
         case let .httpStatus(status):
-            return "The locations service returned status \(status)."
+            return L10n.Feed.Error.httpStatus(status)
         case .decodingFailed:
-            return "The locations could not be read."
+            return L10n.Feed.Error.decoding
         }
     }
 }
@@ -64,4 +64,3 @@ struct URLSessionLocationFeedClient: LocationFeedClient {
         }
     }
 }
-

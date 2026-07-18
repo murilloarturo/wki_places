@@ -5,7 +5,7 @@ enum CustomLocationConfirmationError: LocalizedError, Equatable {
     case noSelection
 
     var errorDescription: String? {
-        "Move the map or search for a place before confirming."
+        L10n.Custom.Error.noSelection
     }
 }
 
@@ -78,7 +78,7 @@ final class CustomLocationViewModel: ObservableObject {
             longitude: selectedCoordinate.longitude
         )
         return PlaceLocation(
-            name: selectedName ?? "Dropped pin",
+            name: selectedName ?? L10n.Custom.droppedPinName,
             latitude: selectedCoordinate.latitude,
             longitude: selectedCoordinate.longitude
         )
@@ -88,4 +88,3 @@ final class CustomLocationViewModel: ObservableObject {
         errorMessage = nil
     }
 }
-

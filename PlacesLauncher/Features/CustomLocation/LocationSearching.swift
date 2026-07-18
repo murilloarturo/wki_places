@@ -20,11 +20,11 @@ enum LocationSearchError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .emptyQuery:
-            return "Enter a place to search for."
+            return L10n.Search.Error.empty
         case .noResults:
-            return "No matching place was found. Try a more specific search."
+            return L10n.Search.Error.noResults
         case .unavailable:
-            return "Apple Maps search is unavailable right now."
+            return L10n.Search.Error.unavailable
         }
     }
 }
@@ -61,4 +61,3 @@ struct MapKitLocationSearcher: LocationSearching {
         }
     }
 }
-

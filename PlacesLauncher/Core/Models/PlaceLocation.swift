@@ -22,7 +22,7 @@ struct PlaceLocation: Codable, Equatable, Hashable, Identifiable, Sendable {
 
     var displayName: String {
         guard let name = name?.trimmingCharacters(in: .whitespacesAndNewlines), !name.isEmpty else {
-            return "Unnamed location"
+            return L10n.Location.unnamed
         }
         return name
     }
@@ -49,11 +49,11 @@ enum CoordinateValidationError: LocalizedError, Equatable {
     var errorDescription: String? {
         switch self {
         case .latitudeOutOfRange:
-            return "Latitude must be between -90 and 90."
+            return L10n.Coordinate.Error.latitude
         case .longitudeOutOfRange:
-            return "Longitude must be between -180 and 180."
+            return L10n.Coordinate.Error.longitude
         case .nonFiniteValue:
-            return "The selected coordinate is not valid."
+            return L10n.Coordinate.Error.nonFinite
         }
     }
 }
@@ -71,4 +71,3 @@ enum CoordinateValidator {
         }
     }
 }
-
