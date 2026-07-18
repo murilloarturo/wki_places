@@ -87,7 +87,7 @@ PlacesLauncher/
 
 ## Configuration
 
-No secrets or environment variables are required. The public assignment feed URL is defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses `URLSession.shared` with `.reloadIgnoringLocalCacheData`, so each load requests the feed without using locally cached response data.
+No secrets or environment variables are required. The public assignment feed URL and its `GET` method are defined by `LocationFeedEndpoint.assignment`. Home executes `FetchLocationsUseCase` on every entry. `JSONHTTPClient` uses `URLSession.shared` with `.useProtocolCachePolicy`, so standard HTTP response headers control caching and revalidation.
 
 ## License
 

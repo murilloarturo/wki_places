@@ -12,7 +12,8 @@ final class FetchLocationsUseCaseTests: XCTestCase {
             )
         )
         let endpoint = HTTPEndpoint(
-            url: URL(string: "https://example.com/places")!
+            url: URL(string: "https://example.com/places")!,
+            method: .get
         )
         let useCase = DefaultFetchLocationsUseCase(httpClient: client, endpoint: endpoint)
 

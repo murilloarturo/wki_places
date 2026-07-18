@@ -1,14 +1,21 @@
 import Foundation
 
+enum HTTPMethod: String, Equatable, Sendable {
+    case get = "GET"
+    case post = "POST"
+}
+
 struct HTTPEndpoint: Equatable {
     let url: URL
+    let method: HTTPMethod
 }
 
 enum LocationFeedEndpoint {
     static let assignment = HTTPEndpoint(
         url: URL(
             string: "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
-        )!
+        )!,
+        method: .get
     )
 }
 
@@ -62,10 +69,11 @@ struct JSONHTTPClient: HTTPClient {
         _ type: Value.Type,
         from endpoint: HTTPEndpoint
     ) async throws -> Value {
-        let request = URLRequest(
+        var request = URLRequest(
             url: endpoint.url,
-            cachePolicy: .reloadIgnoringLocalCacheData
+            cachePolicy: .useProtocolCachePolicy
         )
+        request.httpMethod = endpoint.method.rawValue
         let (data, response) = try await dataLoader.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
             throw HTTPClientError.invalidResponse
