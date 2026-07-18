@@ -5,20 +5,20 @@ struct SuggestionsView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    let viewModel: SuggestionsViewModel
     let wikipediaOpener: any WikipediaOpening
-    private let suggestions: [SuggestedPlace]
     private let picker: SuggestionPicker
 
     @State private var alertMessage: String?
     @State private var isVisible = false
 
     init(
+        viewModel: SuggestionsViewModel,
         wikipediaOpener: any WikipediaOpening,
-        suggestions: [SuggestedPlace] = SuggestionCatalog.places,
         picker: SuggestionPicker = SuggestionPicker()
     ) {
+        self.viewModel = viewModel
         self.wikipediaOpener = wikipediaOpener
-        self.suggestions = suggestions
         self.picker = picker
     }
 
@@ -28,9 +28,8 @@ struct SuggestionsView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 22) {
-                    retroHeader
-                    surpriseButton
-                    destinationGrid
+                    backButton
+                    stateContent
                 }
                 .padding(.horizontal, 18)
                 .padding(.bottom, 36)
@@ -42,6 +41,9 @@ struct SuggestionsView: View {
         .foregroundStyle(.white)
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .task {
+            await viewModel.loadIfNeeded()
+        }
         .onAppear {
             if reduceMotion {
                 isVisible = true
@@ -64,19 +66,36 @@ struct SuggestionsView: View {
         }
     }
 
-    private var retroHeader: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            Button {
-                dismiss()
-            } label: {
-                Label(L10n.Suggestions.back, systemImage: "chevron.left")
-                    .font(.subheadline.weight(.black))
-                    .foregroundStyle(Color.cyan)
-                    .frame(minHeight: 44)
-            }
-            .buttonStyle(.plain)
-            .accessibilityHint(L10n.Suggestions.Accessibility.backHint)
+    private var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Label(L10n.Suggestions.back, systemImage: "chevron.left")
+                .font(.subheadline.weight(.black))
+                .foregroundStyle(Color.cyan)
+                .frame(minHeight: 44)
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(L10n.Suggestions.Accessibility.backHint)
+        .padding(.top, 8)
+    }
 
+    @ViewBuilder
+    private var stateContent: some View {
+        switch viewModel.state {
+        case .idle, .loading:
+            loadingState
+        case let .loaded(suggestions) where suggestions.isEmpty:
+            emptyState
+        case let .loaded(suggestions):
+            loadedContent(suggestions)
+        case let .failed(message):
+            errorState(message)
+        }
+    }
+
+    private func loadedContent(_ suggestions: [SuggestedPlace]) -> some View {
+        VStack(alignment: .leading, spacing: 22) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(L10n.Suggestions.pickDestination)
                     .font(.system(.largeTitle, design: .monospaced, weight: .black))
@@ -86,11 +105,63 @@ struct SuggestionsView: View {
                     .foregroundStyle(Color.cyan)
             }
             .accessibilityElement(children: .combine)
+
+            surpriseButton(suggestions)
+            destinationGrid(suggestions)
         }
-        .padding(.top, 8)
     }
 
-    private var surpriseButton: some View {
+    private var loadingState: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+                .controlSize(.large)
+                .tint(.cyan)
+            Text(L10n.Suggestions.loading)
+                .font(.caption.weight(.black))
+                .foregroundStyle(Color.cyan)
+        }
+        .frame(maxWidth: .infinity, minHeight: 260)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var emptyState: some View {
+        retroMessage(
+            L10n.Suggestions.Error.empty,
+            symbol: "questionmark.folder.fill"
+        )
+    }
+
+    private func errorState(_ message: String) -> some View {
+        VStack(spacing: 18) {
+            retroMessage(message, symbol: "exclamationmark.triangle.fill")
+            Button {
+                Task { await viewModel.load() }
+            } label: {
+                Label(L10n.Suggestions.retry, systemImage: "arrow.clockwise")
+                    .font(.headline.weight(.black))
+                    .frame(minHeight: 44)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.yellow)
+            .foregroundStyle(.black)
+        }
+    }
+
+    private func retroMessage(_ message: String, symbol: String) -> some View {
+        VStack(spacing: 14) {
+            Image(systemName: symbol)
+                .font(.largeTitle)
+                .foregroundStyle(Color.pink)
+                .accessibilityHidden(true)
+            Text(message)
+                .font(.headline.weight(.black))
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity, minHeight: 190)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func surpriseButton(_ suggestions: [SuggestedPlace]) -> some View {
         Button {
             guard let suggestion = picker.surprise(from: suggestions) else {
                 alertMessage = L10n.Suggestions.Error.empty
@@ -125,7 +196,7 @@ struct SuggestionsView: View {
         .accessibilityHint(L10n.Suggestions.Accessibility.surpriseHint)
     }
 
-    private var destinationGrid: some View {
+    private func destinationGrid(_ suggestions: [SuggestedPlace]) -> some View {
         LazyVGrid(
             columns: [
                 GridItem(

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PlacesHomeView: View {
     let viewModel: LocationFeedViewModel
+    let suggestionsViewModel: SuggestionsViewModel
     let wikipediaOpener: any WikipediaOpening
     let customLocationViewModelFactory: () -> CustomLocationViewModel
 
@@ -28,6 +29,9 @@ struct PlacesHomeView: View {
             .onDisappear {
                 feedTask?.cancel()
                 feedTask = nil
+            }
+            .task {
+                await suggestionsViewModel.loadIfNeeded()
             }
             .alert(
                 L10n.Wikipedia.Error.title,
@@ -97,7 +101,10 @@ struct PlacesHomeView: View {
 
     private var suggestionsLink: some View {
         NavigationLink {
-            SuggestionsView(wikipediaOpener: wikipediaOpener)
+            SuggestionsView(
+                viewModel: suggestionsViewModel,
+                wikipediaOpener: wikipediaOpener
+            )
         } label: {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 7) {
@@ -107,7 +114,7 @@ struct PlacesHomeView: View {
                     Text(L10n.Home.Bonus.title)
                         .font(.headline)
                         .foregroundStyle(.white)
-                    Text(L10n.Home.Bonus.subtitle(SuggestionCatalog.places.count))
+                    Text(suggestionsSubtitle)
                         .font(.caption.monospaced())
                         .foregroundStyle(Color.white.opacity(0.68))
                 }
@@ -142,6 +149,17 @@ struct PlacesHomeView: View {
         .buttonStyle(.plain)
         .accessibilityLabel(L10n.Home.Bonus.title)
         .accessibilityHint(L10n.Home.Bonus.accessibilityHint)
+    }
+
+    private var suggestionsSubtitle: String {
+        switch suggestionsViewModel.state {
+        case .idle, .loading:
+            return L10n.Home.Bonus.loading
+        case let .loaded(suggestions):
+            return L10n.Home.Bonus.subtitle(suggestions.count)
+        case .failed:
+            return L10n.Home.Bonus.unavailable
+        }
     }
 
     private var locationsSection: some View {

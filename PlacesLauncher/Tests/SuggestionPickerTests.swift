@@ -2,8 +2,15 @@ import XCTest
 @testable import PlacesLauncher
 
 final class SuggestionPickerTests: XCTestCase {
-    func testCatalogContainsTwentyNineUniqueValidPlaces() {
-        let places = SuggestionCatalog.places
+    func testBundledCatalogContainsTwentyNineUniqueValidPlaces() async throws {
+        let useCase = DefaultLoadSuggestionsUseCase(
+            provider: LocalSuggestionCatalogProvider(bundle: .main),
+            mapper: SuggestionCatalogMapper(
+                localizer: BundleStringLocalizer(bundle: .main)
+            )
+        )
+
+        let places = try await useCase.execute()
 
         XCTAssertEqual(places.count, 29)
         XCTAssertEqual(Set(places.map(\.id)).count, places.count)
@@ -18,7 +25,7 @@ final class SuggestionPickerTests: XCTestCase {
     }
 
     func testUsesInjectedIndexForDeterministicSurprise() {
-        let suggestions = Array(SuggestionCatalog.places.prefix(3))
+        let suggestions = (0..<3).map(makeSuggestion)
         let picker = SuggestionPicker(random: FixedIndexGenerator(index: 1))
 
         XCTAssertEqual(picker.surprise(from: suggestions), suggestions[1])
@@ -31,7 +38,22 @@ final class SuggestionPickerTests: XCTestCase {
 
     func testRejectsOutOfBoundsGeneratorValue() {
         let picker = SuggestionPicker(random: FixedIndexGenerator(index: 99))
-        XCTAssertNil(picker.surprise(from: SuggestionCatalog.places))
+        XCTAssertNil(picker.surprise(from: [makeSuggestion(0)]))
+    }
+
+    private func makeSuggestion(_ index: Int) -> SuggestedPlace {
+        SuggestedPlace(
+            id: "suggestion-\(index)",
+            title: "Suggestion \(index)",
+            subtitle: "Subtitle \(index)",
+            location: PlaceLocation(
+                name: "Suggestion \(index)",
+                latitude: Double(index),
+                longitude: Double(index)
+            ),
+            symbol: "star.fill",
+            tone: .cyan
+        )
     }
 }
 

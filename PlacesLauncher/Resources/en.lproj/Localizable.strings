@@ -35,8 +35,10 @@
 
 "home.bonus.accessibility_hint" = "Opens the retro suggestions map";
 "home.bonus.eyebrow" = "BONUS MAP";
+"home.bonus.loading" = "Loading curious destinations";
 "home.bonus.subtitle" = "%d curious destinations";
 "home.bonus.title" = "Explore unusual places";
+"home.bonus.unavailable" = "Destinations unavailable";
 "home.choose_map.accessibility_hint" = "Search for a place or choose a coordinate on Apple Maps";
 "home.choose_map.subtitle" = "Search or drop a pin";
 "home.choose_map.title" = "Choose on Map";
@@ -56,12 +58,15 @@
 "suggestions.accessibility.tile" = "%@, %@, coordinates %@";
 "suggestions.back" = "BACK";
 "suggestions.coordinate_count" = "CURIOUS COORDINATES // %02d";
+"suggestions.error.catalog" = "The destination catalog could not be loaded.";
 "suggestions.error.empty" = "No destinations are available.";
 "suggestions.error.fallback" = "Wikipedia could not be opened.";
 "suggestions.error.title" = "MISSION FAILED";
 "suggestions.go" = "GO";
+"suggestions.loading" = "LOADING COORDINATES...";
 "suggestions.pick_destination" = "PICK A DESTINATION";
 "suggestions.random_destination" = "RANDOM DESTINATION";
+"suggestions.retry" = "TRY AGAIN";
 "suggestions.surprise" = "SURPRISE ME";
 
 "suggestions.antelope_canyon.subtitle" = "Sandstone shaped by flash floods";

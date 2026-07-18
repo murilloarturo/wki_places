@@ -108,12 +108,16 @@ internal enum L10n {
       internal static let accessibilityHint = L10n.tr("Localizable", "home.bonus.accessibility_hint", fallback: "Opens the retro suggestions map")
       /// BONUS MAP
       internal static let eyebrow = L10n.tr("Localizable", "home.bonus.eyebrow", fallback: "BONUS MAP")
+      /// Loading curious destinations
+      internal static let loading = L10n.tr("Localizable", "home.bonus.loading", fallback: "Loading curious destinations")
       /// %d curious destinations
       internal static func subtitle(_ p1: Int) -> String {
         return L10n.tr("Localizable", "home.bonus.subtitle", p1, fallback: "%d curious destinations")
       }
       /// Explore unusual places
       internal static let title = L10n.tr("Localizable", "home.bonus.title", fallback: "Explore unusual places")
+      /// Destinations unavailable
+      internal static let unavailable = L10n.tr("Localizable", "home.bonus.unavailable", fallback: "Destinations unavailable")
     }
     internal enum ChooseMap {
       /// Search for a place or choose a coordinate on Apple Maps
@@ -155,10 +159,14 @@ internal enum L10n {
     }
     /// GO
     internal static let go = L10n.tr("Localizable", "suggestions.go", fallback: "GO")
+    /// LOADING COORDINATES...
+    internal static let loading = L10n.tr("Localizable", "suggestions.loading", fallback: "LOADING COORDINATES...")
     /// PICK A DESTINATION
     internal static let pickDestination = L10n.tr("Localizable", "suggestions.pick_destination", fallback: "PICK A DESTINATION")
     /// RANDOM DESTINATION
     internal static let randomDestination = L10n.tr("Localizable", "suggestions.random_destination", fallback: "RANDOM DESTINATION")
+    /// TRY AGAIN
+    internal static let retry = L10n.tr("Localizable", "suggestions.retry", fallback: "TRY AGAIN")
     /// SURPRISE ME
     internal static let surprise = L10n.tr("Localizable", "suggestions.surprise", fallback: "SURPRISE ME")
     internal enum Accessibility {
@@ -222,6 +230,8 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "suggestions.darvaza.title", fallback: "Darvaza Crater")
     }
     internal enum Error {
+      /// The destination catalog could not be loaded.
+      internal static let catalog = L10n.tr("Localizable", "suggestions.error.catalog", fallback: "The destination catalog could not be loaded.")
       /// No destinations are available.
       internal static let empty = L10n.tr("Localizable", "suggestions.error.empty", fallback: "No destinations are available.")
       /// Wikipedia could not be opened.

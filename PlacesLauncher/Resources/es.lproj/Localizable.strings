@@ -35,8 +35,10 @@
 
 "home.bonus.accessibility_hint" = "Abre el mapa retro de sugerencias";
 "home.bonus.eyebrow" = "MAPA EXTRA";
+"home.bonus.loading" = "Cargando destinos curiosos";
 "home.bonus.subtitle" = "%d destinos curiosos";
 "home.bonus.title" = "Explora lugares inusuales";
+"home.bonus.unavailable" = "Destinos no disponibles";
 "home.choose_map.accessibility_hint" = "Busca un lugar o elige una coordenada en Mapas de Apple";
 "home.choose_map.subtitle" = "Busca o coloca un marcador";
 "home.choose_map.title" = "Elegir en el mapa";
@@ -56,12 +58,15 @@
 "suggestions.accessibility.tile" = "%@, %@, coordenadas %@";
 "suggestions.back" = "VOLVER";
 "suggestions.coordinate_count" = "COORDENADAS CURIOSAS // %02d";
+"suggestions.error.catalog" = "No se pudo cargar el catálogo de destinos.";
 "suggestions.error.empty" = "No hay destinos disponibles.";
 "suggestions.error.fallback" = "No se pudo abrir Wikipedia.";
 "suggestions.error.title" = "MISIÓN FALLIDA";
 "suggestions.go" = "IR";
+"suggestions.loading" = "CARGANDO COORDENADAS...";
 "suggestions.pick_destination" = "ELIGE UN DESTINO";
 "suggestions.random_destination" = "DESTINO ALEATORIO";
+"suggestions.retry" = "REINTENTAR";
 "suggestions.surprise" = "SORPRÉNDEME";
 
 "suggestions.antelope_canyon.subtitle" = "Arenisca esculpida por riadas";

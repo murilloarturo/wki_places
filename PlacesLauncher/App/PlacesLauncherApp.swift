@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct PlacesLauncherApp: App {
     @State private var feedViewModel: LocationFeedViewModel
+    @State private var suggestionsViewModel: SuggestionsViewModel
     private let container: AppContainer
 
     init() {
@@ -11,12 +12,16 @@ struct PlacesLauncherApp: App {
         _feedViewModel = State(
             initialValue: container.makeLocationFeedViewModel()
         )
+        _suggestionsViewModel = State(
+            initialValue: container.makeSuggestionsViewModel()
+        )
     }
 
     var body: some Scene {
         WindowGroup {
             PlacesHomeView(
                 viewModel: feedViewModel,
+                suggestionsViewModel: suggestionsViewModel,
                 wikipediaOpener: container.wikipediaOpener,
                 customLocationViewModelFactory: container.makeCustomLocationViewModel
             )
