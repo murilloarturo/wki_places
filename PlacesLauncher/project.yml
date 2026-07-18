@@ -11,10 +11,17 @@ settings:
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
     ENABLE_USER_SCRIPT_SANDBOXING: true
+packages:
+  Factory:
+    url: https://github.com/hmlongco/Factory.git
+    exactVersion: 3.3.2
 targets:
   PlacesLauncher:
     type: application
     platform: iOS
+    dependencies:
+      - package: Factory
+        product: FactoryKit
     sources:
       - path: App
       - path: Core
